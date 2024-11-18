@@ -1,94 +1,109 @@
 <?php
-
+$getCountCategories = count(loadall_danhmuc());
 ?>
 <div class="container-fluid py-4 pb-0">
     <div class="row">
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+        <!-- Card Khách hàng -->
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card shadow-sm">
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Khách hàng</p>
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Khách hàng</p>
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="fa-solid fa-users" style="color: #ffffff;"></i>
+                            <div class="icon icon-shape bg-primary text-white shadow text-center rounded-circle">
+                                <i class="fa-solid fa-users"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+        <!-- Card Danh mục -->
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card shadow-sm">
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Danh mục</p>
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Danh mục</p>
+                                <h5 class="font-weight-bolder"><?php echo $getCountCategories; ?></h5>
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="fa-solid fa-tag" style="color: #ffffff;"></i>
+                            <div class="icon icon-shape bg-primary text-white shadow text-center rounded-circle">
+                                <i class="fa-solid fa-tag"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+        <!-- Card Sản phẩm -->
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card shadow-sm">
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Sản phẩm</p>
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Sản phẩm</p>
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="fa-brands fa-buffer" style="color: #ffffff;"></i>
+                            <div class="icon icon-shape bg-primary text-white shadow text-center rounded-circle">
+                                <i class="fa-brands fa-buffer"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6">
-            <div class="card">
+        <!-- Card Đơn hàng -->
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card shadow-sm">
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Đơn hàng</p>
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Đơn hàng</p>
                             </div>
                         </div>
                         <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="fa-solid fa-basket-shopping" style="color: #ffffff;"></i>
+                            <div class="icon icon-shape bg-primary text-white shadow text-center rounded-circle">
+                                <i class="fa-solid fa-basket-shopping"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <br>
-        <br>
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-            <tr>
-                                <th>Mã danh mục</th>
-                                <th>Tên danh mục</th>
-                                <th>Số lượng</th>
-                                <th>Giá cao nhất</th>
-                                <th>Giá thấp nhất</th>
-                                <th>Giá trung bình</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
     </div>
-    
+    <!-- Bảng thông tin danh mục -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Mã danh mục</th>
+                            <th>Tên danh mục</th>
+                            <th>Số lượng</th>
+                            <th>Giá cao nhất</th>
+                            <th>Giá thấp nhất</th>
+                            <th>Giá trung bình</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Đổ dữ liệu -->
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -57,7 +57,7 @@
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav m-auto">
                             <a href="index.php" class="nav-item nav-link active">Trang chủ </a>
-                            <a href="" class="nav-item nav-link">Danh mục</a>
+                            <a href="index.php?act=adddm" class="nav-item nav-link">Danh mục</a>
                             <a href="" class="nav-item nav-link">Sản phẩm</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Trang khác</a>
