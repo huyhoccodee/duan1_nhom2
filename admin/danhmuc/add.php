@@ -10,6 +10,19 @@
 <body>
     <div class="container my-5">
         <h3 class="text-center mb-4">Thêm Danh Mục</h3>
+
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        <?php if (isset($error)) { ?>
+            <div class="alert alert-danger">
+                <?php echo $error; ?>
+            </div>
+        <!-- Hiển thị thông báo thành công -->
+        <?php } elseif (isset($message)) { ?>
+            <div class="alert alert-success">
+                <?php echo $message; ?>
+            </div>
+        <?php } ?>
+
         <form action="index.php?act=adddm" method="post">
             <div class="mb-3">
                 <label for="" class="form-label">Mã loại:</label>
