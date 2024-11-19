@@ -3,6 +3,7 @@
 include "header.php";
 include "../model/pdo.php";
 include "../model/danhmuc.php";
+include "../model/voucher.php";
 
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
@@ -89,6 +90,35 @@ if (isset($_GET['act'])) {
             $listdanhmuc = loadall_danhmuc();
             include "danhmuc/listdm.php";
             break;
+        // add voucher
+        case 'addvc':
+            if(isset($_POST['themmoi'])&&($_POST['themmoi'])){
+                $name_magg=$_POST['name_magg'];
+                $giamgia=$_POST['giamgia'];
+                
+                $soluong=$_POST['soluong'];
+                insert_voucher($name_magg,$giamgia,$soluong);
+                $thongbao="Thêm mới thành công";
+            }
+            include "voucher/add.php";  
+
+        break;
+        // list voucher
+        case 'listvc':
+            
+            $listvoucher=loadall();
+            include "voucher/list.php";
+
+        break;
+        // xoa voucher
+        case 'xoavc':
+            if(isset($_GET['id'])&&($_GET['id']>0)){
+                delete_voucher($_GET['id']);
+              }
+              $listvoucher=loadall();
+            include "voucher/list.php";
+
+        break;
 
         // Hành động mặc định
         default:
