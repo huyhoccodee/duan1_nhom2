@@ -42,7 +42,7 @@ if (isset($_GET['act'])) {
             include "danhmuc/updatedm.php";
             break;
 
-       // Cập nhật danh mục
+    //    Cập nhật danh mục
         // case 'updatedm':
         //     if (isset($_GET['id']) && $_GET['id'] > 0) {
         //         $id = intval($_GET['id']); // Lấy id từ URL

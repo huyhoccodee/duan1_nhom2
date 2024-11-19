@@ -13,7 +13,7 @@
                             <th>Email</th>
                             <th>Số điện thoại</th>
                             <th>Nội dung</th>
-                            <th>Xóa</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <?php 

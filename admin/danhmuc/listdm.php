@@ -15,7 +15,7 @@
                 <tr>
                     <th>Mã danh mục</th>
                     <th>Tên danh mục</th>
-                    <th colspan="2" class="text-center">Action</th>
+                    <th colspan="2" class="text-center">Thao tác</th>
                 </tr>
             </thead>
             <tbody>

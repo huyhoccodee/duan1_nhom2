@@ -30,7 +30,7 @@
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Tên loại:</label>
-                <input type="text" name="tenloai" id="" class="form-control" required>
+                <input type="text" name="tenloai" id="" class="form-control" >
             </div>
             <button type="submit" name="themdanhmuc" value="Thêm danh mục" class="btn btn-primary">Thêm danh mục</button>
         </form>
