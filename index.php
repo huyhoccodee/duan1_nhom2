@@ -55,6 +55,12 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
             case 'chinhsach':
                 include "view/chinhsach.php";
                 break;
+            
+                case 'gioithieu':
+                    $sql="select * from magiamgia where is_delete=1";
+                    $mgg=pdo_query_one($sql);
+                            include "view/gioithieu.php";
+                            break;    
 
         default:
             include "view/index.php";
