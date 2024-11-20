@@ -42,7 +42,7 @@ if (isset($_GET['act'])) {
             include "danhmuc/updatedm.php";
             break;
 
-       // Cập nhật danh mục
+    //    Cập nhật danh mục
         // case 'updatedm':
         //     if (isset($_GET['id']) && $_GET['id'] > 0) {
         //         $id = intval($_GET['id']); // Lấy id từ URL
@@ -119,6 +119,26 @@ if (isset($_GET['act'])) {
             include "voucher/list.php";
 
         break;
+        /**LIÊN HỆ */
+        
+        // list lien he
+        case 'listlh':
+            $sql="select * from lienhe order by lh_name";
+            $listlienhe=pdo_query($sql);
+            include "lienhe/list.php";
+
+        break;
+
+        //xoa lien he
+        case 'xoalh':
+            if(isset($_GET['id'])&&($_GET['id']>0)){
+               $sql="delete from lienhe where id=".$_GET['id'];
+               pdo_execute($sql);
+              }
+              $sql="select * from lienhe order by lh_name";
+              $listlienhe=pdo_query($sql);
+            include "lienhe/list.php";
+            break;
 
         // Hành động mặc định
         default:
