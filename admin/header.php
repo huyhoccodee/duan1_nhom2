@@ -35,38 +35,14 @@
                             <img src="../img/logoHKT.png" alt="Logo">
                         </a>
                     </div>
-                </div>
-
-<<<<<<< HEAD
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav m-auto">
-                            <a href="index.php" class="nav-item nav-link active">Trang chủ </a>
-                            <a href="index.php?act=adddm" class="nav-item nav-link">Danh mục</a>
-                            <a href="" class="nav-item nav-link">Sản phẩm</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Trang khác</a>
-                                <div class="dropdown-menu">
-                                    <a href="index.php?act=addvc" class="dropdown-item">Voucher</a>
-                                    <a href="" class="dropdown-item">Đơn hàng</a>
-                                    <a href="" class="dropdown-item">User</a>
-                                    <a href="" class="dropdown-item">Liên hệ</a>
-                                    <a href="" class="dropdown-item">Bình luận</a>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </nav>
-=======
->>>>>>> 5da49bf72c474f27b5f5cd94251e0243689855d5
+                </div>              
             </div>
 
         </div>
     </div>
     </div>
     <!-- Top Header End -->
-
-
+     
     <!-- Header Start -->
     <div class="header">
         <div class="container">

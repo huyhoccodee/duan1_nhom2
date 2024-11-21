@@ -55,7 +55,8 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
             case 'chinhsach':
                 include "view/chinhsach.php";
                 break;
-
+           
+            
         default:
             include "view/index.php";
             break;
