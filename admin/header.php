@@ -56,7 +56,7 @@
                     <div class="navbar-nav m-auto">
                         <a href="index.php" class="nav-item nav-link active">Trang chủ </a>
                         <a href="index.php?act=adddm" class="nav-item nav-link">Danh mục</a>
-                        <a href="" class="nav-item nav-link">Sản phẩm</a>
+                        <a href="index.php?act=addsp" class="nav-item nav-link">Sản phẩm</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Trang khác</a>
                             <div class="dropdown-menu">
