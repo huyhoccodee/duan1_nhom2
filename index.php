@@ -3,6 +3,9 @@
 
 include "view/header.php";
 include "model/pdo.php";
+include "model/voucher.php";
+
+
 
 if (isset($_GET['act'])&&($_GET['act']!="")) {
     $act=$_GET['act'];
@@ -56,11 +59,21 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                 include "view/chinhsach.php";
                 break;
             
+                // case 'gioithieu':
+                //     $sql="select * from magiamgia where is_delete=1";
+                //     $mgg=pdo_query_one($sql);
+                //             include "view/gioithieu.php";
+                //             break;  
+                
                 case 'gioithieu':
-                    $sql="select * from magiamgia where is_delete=1";
-                    $mgg=pdo_query_one($sql);
-                            include "view/gioithieu.php";
-                            break;    
+                    $mgg_list = loadall(); // Gọi hàm loadall để lấy toàn bộ danh sách mã giảm giá
+                
+                    if (empty($mgg_list)) {
+                        echo "Không có mã giảm giá nào.";
+                    } else {
+                        include "view/gioithieu.php"; // Truyền dữ liệu vào file view
+                    }
+                    break;
 
         default:
             include "view/index.php";

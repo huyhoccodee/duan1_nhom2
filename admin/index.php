@@ -4,6 +4,8 @@ include "header.php";
 include "../model/pdo.php";
 include "../model/danhmuc.php";
 include "../model/voucher.php";
+include "../model/dangky.php";
+
 
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
@@ -139,6 +141,24 @@ if (isset($_GET['act'])) {
               $listlienhe=pdo_query($sql);
             include "lienhe/list.php";
             break;
+
+            /**ĐĂNG KÝ */
+            //list đk
+        case 'listdangky':
+            
+            $listdangky=loadall_dangky();
+            include "dangky/list.php";
+
+        break;
+        // xóa đk
+        case 'xoadk':
+            if(isset($_GET['id'])&&($_GET['id']>0)){
+                delete_dangky($_GET['id']);
+              }
+              $listdangky=loadall_dangky();
+            include "dangky/list.php";
+
+        break; 
 
         // Hành động mặc định
         default:

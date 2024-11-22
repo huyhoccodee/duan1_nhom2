@@ -70,10 +70,14 @@
                     </tr>
                 </thead>
                 <tbody class="align-middle">
+
+                    <?php foreach ($mgg_list as $mgg): ?>
                     <tr>
-                        <td>HKT STORE</td>
-                        <td>30K</td>
+                        <td><?php echo $mgg['name_magg']; ?></td>
+                        <td><?php echo $mgg['giamgia']; ?></td>
                     </tr>
+                    <?php endforeach; ?>
+
                 </tbody>
             </table>
         </div>
