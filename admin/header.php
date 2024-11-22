@@ -62,7 +62,7 @@
                             <div class="dropdown-menu">
                                 <a href="index.php?act=addvc" class="dropdown-item">Voucher</a>
                                 <a href="" class="dropdown-item">Đơn hàng</a>
-                                <a href="" class="dropdown-item">User</a>
+                                <a href="index.php?act=listdangky" class="dropdown-item">User</a>
                                 <a href="index.php?act=listlh" class="dropdown-item">Liên hệ</a>
                                 <a href="" class="dropdown-item">Bình luận</a>
                             </div>
