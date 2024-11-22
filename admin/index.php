@@ -5,6 +5,7 @@ include "../model/pdo.php";
 include "../model/danhmuc.php";
 include "../model/voucher.php";
 include "../model/dangky.php";
+include "../model/sanpham.php";
 
 
 if (isset($_GET['act'])) {
@@ -159,6 +160,150 @@ if (isset($_GET['act'])) {
             include "dangky/list.php";
 
         break; 
+
+        case 'addsp':
+            if (isset($_POST['themsp']) && $_POST['themsp']) {
+                $errors = []; // Mảng lưu lỗi
+        
+                // Validate mã sản phẩm
+                $masp = trim($_POST['masp']);
+                if (empty($masp)) {
+                    $errors['masp'] = "Mã sản phẩm không được để trống.";
+                }
+        
+                // Validate tên sản phẩm
+                $tensp = trim($_POST['tensp']);
+                if (empty($tensp)) {
+                    $errors['tensp'] = "Tên sản phẩm không được để trống.";
+                }
+        
+                // Validate giá sản phẩm
+                $gia = trim($_POST['gia']);
+                if (!is_numeric($gia) || $gia <= 0) {
+                    $errors['gia'] = "Giá sản phẩm phải là số và lớn hơn 0.";
+                }
+        
+                // Validate mô tả sản phẩm
+                $mota = trim($_POST['mota']);
+                if (empty($mota)) {
+                    $errors['mota'] = "Mô tả không được để trống.";
+                }
+        
+                // Validate hình ảnh sản phẩm
+                $img = $_FILES['img']['name'];
+                if (empty($img)) {
+                    $errors['img'] = "Hình ảnh không được để trống.";
+                } elseif ($_FILES['img']['size'] > 2 * 1024 * 1024) {
+                    $errors['img'] = "Hình ảnh phải nhỏ hơn 2MB.";
+                }
+        
+                // Validate lượt xem sản phẩm
+                $luotxem = trim($_POST['luotxem']);
+                if (!is_numeric($luotxem) || $luotxem <= 0) {
+                    $errors['luotxem'] = "Lượt xem phải là số và không được nhỏ hơn 0.";
+                }
+        
+                if (empty($errors)) {
+                    $target_dir = "../upload/";
+                    $target_file = $target_dir . basename($img);
+                    if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
+                        // Thực hiện insert nếu không có lỗi
+                        $id_dm = $_POST['idloai'];
+                        insert_sanpham($masp, $tensp, $img, $gia, $mota, $luotxem, $id_dm);
+                        $success = "Thêm sản phẩm thành công!";
+                    }
+                }
+            }
+    
+            $listdanhmuc = loadall_danhmuc();
+            include "sanpham/add.php";
+            break;
+        
+        
+
+        case 'listsp':
+            if (isset($_POST['listok'])&&($_POST['listok'])) {
+                $kyw=$_POST['kyw'];
+                $iddm=$_POST['iddm'];
+            } else{
+                $kyw='';
+                $iddm=0;
+            }
+            $listdanhmuc=loadall_danhmuc();
+            $listsanpham=loadall_sanpham($kyw,$iddm);
+        include "sanpham/list.php";
+        break; 
+
+        case 'spbt':
+            $listsanpham=loadall_spkbt();
+            $listdanhmuc=loadall_danhmuc();
+        $listsize=loadall_size();
+        $listmau=loadall_mau();
+            include "sanpham/spbt.php";
+            break;
+
+        case 'addspbt':
+            if (isset($_POST['themspbt']) && $_POST['themspbt']) {
+                $masp=$_POST['masp'];
+               $idsize=$_POST['idsize'];
+               $idmau=$_POST['idmau'];
+               $soluong=$_POST['soluong'];
+               insert_spbt($masp,$idsize,$idmau,$soluong);
+            }
+            $listsanpham=loadall_sanpham();
+            include "sanpham/list.php";
+            $listdanhmuc=loadall_danhmuc();
+            $listsize=loadall_size();
+            $listmau=loadall_mau();
+          
+            break;
+
+        case 'xoasp':
+            if (isset($_GET['id'])&& ($_GET['id']>0) ) {
+                $id=$_GET['id'];
+                delete_sanpham($id);
+            }
+            $listsanpham=loadall_sanpham();
+            include "sanpham/list.php";
+            break;
+            case 'suasp':
+                if (isset($_GET['id'])&& ($_GET['id']>0) ) {
+                    $id=$_GET['id'];
+                    $sp=loadone_sanpham($id);
+                }
+                $listdanhmuc=loadall_danhmuc();
+            $listsize=loadall_size();
+            $listmau=loadall_mau();
+                include "sanpham/update.php";
+            break;
+
+            case 'updatesp':
+                if (isset($_POST['capnhatsp']) && $_POST['capnhatsp']) {
+                    $id_bt=$_POST['id_bt'];
+                    $masp=$_POST['masp'];
+                    $tensp=$_POST['tensp'];
+                    $img=$_FILES['img']['name'];
+                   $target_dir="../upload/";
+                   $target_file=$target_dir.basename($_FILES["img"]['name']);
+                   if (move_uploaded_file($_FILES["img"]["tmp_name"],$target_file)) {
+                    
+                   }
+                   $gia=$_POST['gia'];
+                   $mota=$_POST['mota'];
+                   $luotxem=$_POST['luotxem'];
+                   $id_dm=$_POST['idloai'];
+                   $idsize=$_POST['idsize'];
+                   $idmau=$_POST['idmau'];
+                   $soluong=$_POST['soluong'];
+                   update_sanpham($masp,$tensp,$img,$gia,$mota,$luotxem,$id_dm,$idsize,$idmau,$soluong,$id_bt);
+                }
+                $listdanhmuc=loadall_danhmuc();
+                $listsize=loadall_size();
+                $listmau=loadall_mau();
+                $listsanpham=loadall_sanpham();
+                include "sanpham/list.php";
+                break;
+        
 
         // Hành động mặc định
         default:

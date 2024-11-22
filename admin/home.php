@@ -1,5 +1,7 @@
 <?php
 $getCountCategories = count(loadall_danhmuc());
+$getCountAccounts = count(loadall_dangky());
+$getCountProducts = count(loadall_spkbt());
 ?>
 <div class="container-fluid py-4 pb-0">
     <div class="row">
@@ -11,6 +13,7 @@ $getCountCategories = count(loadall_danhmuc());
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Khách hàng</p>
+                                <h5 class="font-weight-bolder"><?php echo $getCountAccounts; ?></h5>
                             </div>
                         </div>
                         <div class="col-4 text-end">
@@ -50,11 +53,12 @@ $getCountCategories = count(loadall_danhmuc());
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Sản phẩm</p>
+                                <h5 class="font-weight-bolder"><?php echo $getCountProducts; ?></h5>
                             </div>
                         </div>
                         <div class="col-4 text-end">
                             <div class="icon icon-shape bg-primary text-white shadow text-center rounded-circle">
-                                <i class="fa-brands fa-buffer"></i>
+                                <i class="fa-solid fa-tag"></i>
                             </div>
                         </div>
                     </div>
