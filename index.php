@@ -59,11 +59,9 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
             include "view/lienhe.php";
             break;
 
-        case 'chinhsach':
-            include "view/chinhsach.php";
-            break;
-            
-
+            case 'chinhsach':
+                include "view/chinhsach.php";
+                break;
                 
         case 'gioithieu':
             $mgg_list = loadall(); // Gọi hàm loadall để lấy toàn bộ danh sách mã giảm giá
@@ -172,13 +170,45 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
             header('Location: index.php');
             include "view/trangchu.php";
             break;
-                
-
-
+            // edit tai khoan
+        case 'edit_taikhoan':
+                unset($_SESSION['error']);
+                if (isset($_POST['capnhat'])&&($_POST['capnhat'])){
+                    $name=$_POST['name'];
+                    $pass=$_POST['pass'];
+                    $email=$_POST['email'];
+                    $diachi=$_POST['diachi'];
+                    $sdt=$_POST['sdt'];
+                    $id=$_POST['id'];
+                    if (empty($email)) {
+                        $_SESSION['error']['email'] = 'Bạn chưa nhập email';
+                    } else {
+                        $regex_email = "/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
+                        if (!preg_match($regex_email, $email)) {
+                            $_SESSION['error']['email'] = 'Email không hợp lệ';
+                        }
+                    }
+                    if (empty($sdt)) {
+                        $_SESSION['error']['sdt'] = 'Bạn chưa nhập sdt';
+                    } else {
+                        $regexPhone ='/^0[0-9]{9}$/';
+                        if (!preg_match($regexPhone, $sdt)) {
+                            $_SESSION['error']['sdt'] = 'số điện thoại không hợp lệ';
+                        }
+                    }
+                    if (empty($_SESSION['error'])) {  
+                    update_taikhoan($id,$name,$pass,$email,$diachi,$sdt);
+                    $_SESSION['user']=checkuser($name,$pass);
+                    header('Location: index.php?act=trangchu');
+                    }
+                }
+                include "view/edit_taikhoan.php";
+                break;
         default:
             include "view/index.php";
             break;
     }
+
 } else {
     include "view/index.php";
 }
