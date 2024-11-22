@@ -78,14 +78,14 @@
                     <div class="navbar-nav m-auto">
                         <a href="index.php" class="nav-item nav-link active">Trang chủ </a>
                         <a href="" class="nav-item nav-link">Sản phẩm</a>
-                        <a href="" class="nav-item nav-link">Voucher</a>
+                        <a href="index.php?act=gioithieu" class="nav-item nav-link">Voucher</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Trang khác</a>
                             <div class="dropdown-menu">
                                 <a href="index.php?act=lienhe" class="dropdown-item">Liên hệ</a>
                                 <a href="index.php?act=chinhsach" class="dropdown-item">Chính sách</a>
                                 <a href="" class="dropdown-item">Tài khoản của tôi</a>
-                                
+
                             </div>
                         </div>
 

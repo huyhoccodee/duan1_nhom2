@@ -35,14 +35,13 @@
                             <img src="../img/logoHKT.png" alt="Logo">
                         </a>
                     </div>
-                </div>              
-            </div>
 
+            </div>
         </div>
     </div>
     </div>
     <!-- Top Header End -->
-     
+
     <!-- Header Start -->
     <div class="header">
         <div class="container">
