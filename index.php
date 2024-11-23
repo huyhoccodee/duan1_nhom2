@@ -11,6 +11,7 @@ include "model/pdo.php";
 include "model/voucher.php";
 include "model/dangky.php";
 
+
 if (isset($_GET['act'])&&($_GET['act']!="")) {
     $act=$_GET['act'];
     switch ($act) {
@@ -205,12 +206,12 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                 include "view/edit_taikhoan.php";
                 break;
         default:
-            include "view/index.php";
+            include "view/trangchu.php";
             break;
     }
 
 } else {
-    include "view/index.php";
+    include "view/trangchu.php";
 }
 
 
