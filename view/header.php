@@ -54,7 +54,7 @@
                             ?>
                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name?></a>
                         <div class="dropdown-menu">
-                                <a href="index.php?act=dangxuat" class="dropdown-item">Đăng xuất</a>
+                                <a href="index.php?act=thoat" class="dropdown-item">Đăng xuất</a>
                                 <a href="index.php?act=edit_taikhoan" class="dropdown-item">Cập nhật tài khoản</a>
                                 <?php
                             if ($id_role==1) {
@@ -98,7 +98,7 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav m-auto">
                         <a href="index.php" class="nav-item nav-link active">Trang chủ </a>
-                        <a href="" class="nav-item nav-link">Sản phẩm</a>
+                        <a href="index.php?act=sanpham" class="nav-item nav-link">Sản phẩm</a>
                         <a href="index.php?act=gioithieu" class="nav-item nav-link">Voucher</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Trang khác</a>

@@ -10,7 +10,8 @@ include "view/header.php";
 include "model/pdo.php";
 include "model/voucher.php";
 include "model/dangky.php";
-
+include "model/sanpham.php";
+include "model/danhmuc.php";
 if (isset($_GET['act'])&&($_GET['act']!="")) {
     $act=$_GET['act'];
     switch ($act) {
@@ -222,8 +223,26 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                            } 
                         
                     include "view/quenmk.php";
-        
+
                 break;       
+            // san pham
+            case 'sanpham':
+                if (isset($_POST['kyw'])&&($_POST['kyw']!="")) {
+                    $kyw=$_POST['kyw'];
+                }else {
+                    $kyw="";
+                }
+                if (isset($_GET['iddm'])&&($_GET['iddm']>0)) {
+                    $iddm=$_GET['iddm'];
+                } else {
+                   $iddm=0;
+                }
+                    $listdm=loadall_danhmuc();
+                  $sphome= loadall_spkobt($kyw,$iddm);
+                    $sptop10=load_sanpham_top10();
+                    
+                    include "view/product_list.php";
+                    break;
         default:
             include "view/index.php";
             break;
