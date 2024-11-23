@@ -10,7 +10,8 @@ include "view/header.php";
 include "model/pdo.php";
 include "model/voucher.php";
 include "model/dangky.php";
-
+include "model/sanpham.php";
+include "model/danhmuc.php";
 if (isset($_GET['act'])&&($_GET['act']!="")) {
     $act=$_GET['act'];
     switch ($act) {
