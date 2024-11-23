@@ -54,7 +54,7 @@
                             ?>
                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name?></a>
                         <div class="dropdown-menu">
-                                <a href="index.php?act=thoat" class="dropdown-item">Đăng xuất</a>
+                                <a href="index.php?act=dangxuat" class="dropdown-item">Đăng xuất</a>
                                 <a href="index.php?act=edit_taikhoan" class="dropdown-item">Cập nhật tài khoản</a>
                                 <?php
                             if ($id_role==1) {
