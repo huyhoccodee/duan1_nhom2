@@ -204,6 +204,26 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                 }
                 include "view/edit_taikhoan.php";
                 break;
+                // quen mat khau
+                case 'quenmk':
+                    if (isset($_POST['guiemail']) && ($_POST['guiemail'])) {
+                        
+                        $email = $_POST['email'];
+                        
+        
+                        
+                         $sql = "SELECT * FROM taikhoan WHERE email ='$email'";
+                         $checkemail = pdo_query_one($sql); 
+                         if (is_array($checkemail)) {
+                            $thongbao = "Mật khẩu của bạn là: " . $checkemail['pass'];
+                        } else {
+                            $thongbao = "Email này không tồn tại";
+                        }
+                           } 
+                        
+                    include "view/quenmk.php";
+        
+                break;       
         default:
             include "view/index.php";
             break;
