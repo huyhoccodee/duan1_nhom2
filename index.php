@@ -12,6 +12,8 @@ include "model/voucher.php";
 include "model/dangky.php";
 include "model/sanpham.php";
 include "model/danhmuc.php";
+$sphome= loadall_spkobt($kyw="",$iddm=0);
+$sptop10=load_sanpham_top10();
 if (isset($_GET['act'])&&($_GET['act']!="")) {
     $act=$_GET['act'];
     switch ($act) {
