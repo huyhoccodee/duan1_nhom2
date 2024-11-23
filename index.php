@@ -11,7 +11,6 @@ include "model/pdo.php";
 include "model/voucher.php";
 include "model/dangky.php";
 
-
 if (isset($_GET['act'])&&($_GET['act']!="")) {
     $act=$_GET['act'];
     switch ($act) {
@@ -205,6 +204,44 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                 }
                 include "view/edit_taikhoan.php";
                 break;
+                // quen mat khau
+                case 'quenmk':
+                    if (isset($_POST['guiemail']) && ($_POST['guiemail'])) {
+                        
+                        $email = $_POST['email'];
+                        
+        
+                        
+                         $sql = "SELECT * FROM taikhoan WHERE email ='$email'";
+                         $checkemail = pdo_query_one($sql); 
+                         if (is_array($checkemail)) {
+                            $thongbao = "Mật khẩu của bạn là: " . $checkemail['pass'];
+                        } else {
+                            $thongbao = "Email này không tồn tại";
+                        }
+                           } 
+                        
+                    include "view/quenmk.php";
+
+                break;       
+            // san pham
+            case 'sanpham':
+                if (isset($_POST['kyw'])&&($_POST['kyw']!="")) {
+                    $kyw=$_POST['kyw'];
+                }else {
+                    $kyw="";
+                }
+                if (isset($_GET['iddm'])&&($_GET['iddm']>0)) {
+                    $iddm=$_GET['iddm'];
+                } else {
+                   $iddm=0;
+                }
+                    $listdm=loadall_danhmuc();
+                  $sphome= loadall_spkobt($kyw,$iddm);
+                    $sptop10=load_sanpham_top10();
+                    
+                    include "view/product_list.php";
+                    break;
         default:
             include "view/trangchu.php";
             break;

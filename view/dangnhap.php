@@ -41,6 +41,7 @@
                                     }
                                     ?>
                                 </div>
+                                </div><a href="index.php?act=quenmk">Quên Mật Khẩu</a>
                             </div>
 
                             <!-- Nút đăng nhập -->
