@@ -52,32 +52,32 @@
                             if (isset($_SESSION['user'])) {
                                 extract($_SESSION['user']);
                             ?>
-                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name?></a>
-                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name?></a>
+                            <div class="dropdown-menu">
                                 <a href="index.php?act=dangxuat" class="dropdown-item">Đăng xuất</a>
                                 <a href="index.php?act=edit_taikhoan" class="dropdown-item">Cập nhật tài khoản</a>
                                 <?php
                             if ($id_role==1) {
                             ?>
-                            <a href="admin/index.php" class="dropdown-item">Quản lý</a>
-                            <?php } ?>
-                                            
-                        </div>
+                                <a href="admin/index.php" class="dropdown-item">Quản lý</a>
+                                <?php } ?>
+
+                            </div>
                             <?php
                            } else {
-                              ?>  
-                            
+                              ?>
+
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tài khoản</a>
                             <div class="dropdown-menu">
                                 <a href="index.php?act=dangnhap" class="dropdown-item">Đăng nhập</a>
                                 <a href="index.php?act=dangky" class="dropdown-item">Đăng ký</a>
                             </div>
-                        <?php
+                            <?php
                         }
                             ?>
                         </div>
                         <div class="cart">
-                            <a href=""><i class="fa fa-cart-plus"></i></a>
+                            <a href="index.php?act=addcart"><i class="fa fa-cart-plus"></i></a>
                         </div>
                     </div>
                 </div>

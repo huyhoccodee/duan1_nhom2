@@ -5,6 +5,7 @@ if (isset($_SESSION['user'])) {
 }
 
 ob_start();
+if(!isset($_SESSION['giohang'])) $_SESSION['giohang']=[];
 
 include "view/header.php";
 include "model/pdo.php";
@@ -12,6 +13,8 @@ include "model/voucher.php";
 include "model/dangky.php";
 include "model/sanpham.php";
 include "model/danhmuc.php";
+include "model/donhang.php";
+
 $sphome= loadall_spkobt($kyw="",$iddm=0);
 $sptop10=load_sanpham_top10();
 $listsize=loadall_size();
@@ -260,6 +263,105 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                         include "view/trangchu.php";
                     }
                     break;
+ 
+                    /**Giỏ hàng */
+                    case 'addcart':
+                        //lấy dữ liệu từ form
+                        // if(isset($_POST['addtocart'])&&($_POST['addtocart'])){
+                            
+                        //     $id=$_POST['id'];
+                        //     $img=$_POST['img'];
+                        //     $tensp=$_POST['tensp'];
+                        //     $gia=$_POST['gia'];
+                        //     $soluong=1;
+                            
+                        //     $thanhtien=$soluong*$gia;
+                        //     //khởi tạo mảng con
+                        //     $item=array($id,$img,$tensp,$gia,$soluong,$thanhtien);
+                        //     $_SESSION['giohang'][]=$item;
+                            
+                        // }
+                        if (!isset($_SESSION['user'])) {
+                            include "view/dangnhap.php";
+                        }else{
+                            if(isset($_POST['addtocart'])&&($_POST['addtocart'])){
+                               
+                                $id_sp=$_POST['id_sp'];
+                                $img=$_POST['img'];
+                                $tensp=$_POST['tensp'];
+                                $gia=$_POST['gia'];
+                                $id_size = $_POST['size'];
+                                $id_mau = $_POST['mau'];
+                             
+           
+                                if(isset($_POST['soluong'])&&($_POST['soluong']>0)){
+                                    
+                                    $soluong=$_POST['soluong'];
+                                }else{
+                                    $soluong=1;
+                                }
+                                foreach($listsize as $size){
+                                    if ($size['idsize'] == $id_size) {
+                                        $name_size = $size['size'];
+                                    }
+                                }
+                                foreach($listmau as $mau){
+                                    if ($mau['idmau'] == $id_mau) {
+                                        $name_mau = $mau['mau'];
+                                    }
+                                }  
+                                $id_bt=getspbt($id_sp,$id_size,$id_mau)['id_bt'];
+                                $fg=0;
+                                //ktra sp trùng thì cập nhật sl
+                                $i=0;
+                                foreach ($_SESSION['giohang'] as $item){
+                                   
+                                        if($item[0]===$id_sp && $item[5]===$id_size && $item[6]===$id_mau){
+                                            $slnew=$soluong+$item[4];
+                                            $_SESSION['giohang'][$i][4]=$slnew;
+                                            $fg=1;
+                                            break;
+                                        }
+                                        $i++;
+                                }
+                                
+                                //khởi tạo mảng con
+                                if($fg==0){
+                                    $item=array($id_sp,$img,$tensp,$gia,$soluong,$id_size,$id_mau,$name_size,$name_mau,$id_bt);
+                                    $_SESSION['giohang'][]=$item;
+                                }
+                            }
+                         
+                            include "view/cart.php";
+                        }
+                        
+                    
+                    break;
+                         /**Xóa đơn hàng */
+                    case 'delcart':
+                        //xóa all
+                        // if(isset($_POST['idcart'])){
+                        //     array_splice($_SESSION['giohang'],$_GET['idcart'],1);
+        
+                            
+                        // }else{
+                        //     $_SESSION['giohang']=[];
+                        // }
+                        // include "view/cart.php";
+                        if(isset($_GET['i'])&&($_GET['i']>=0)){
+                            if(isset($_SESSION['giohang'])&&(count($_SESSION['giohang'])>=0))
+                                array_splice($_SESSION['giohang'],$_GET['i'],1);
+                            }else{
+                                if(isset($_SESSION['giohang'])) unset($_SESSION['giohang']);
+                            }
+                            
+                            if(isset($_SESSION['giohang'])&&(count($_SESSION['giohang'])==0)){
+                                
+                                header('location: index.php');
+                            }else{
+                                header('location: index.php?act=addcart');
+                            }
+                     break;
         default:
             include "view/trangchu.php";
             break;
