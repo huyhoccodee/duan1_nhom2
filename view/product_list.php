@@ -1,357 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách sản phẩm</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
     <!-- Breadcrumb Start -->
-    <div class="breadcrumb-wrap">
-            <div class="container">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
-                </ul>
-            </div>
+    <div class="breadcrumb-wrap bg-light py-3">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                <li class="breadcrumb-item active">Sản phẩm</li>
+            </ul>
         </div>
-        <!-- Breadcrumb End -->
-        
-        
-        <!-- Product List Start -->
-        <div class="product-view">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="row">
-                           
-                            <?php foreach ($sphome as $sp) {
-                                ?>
-                                <div class="col-lg-4">
-                                <div class="product-item">
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Product List Start -->
+    <div class="product-view py-4">
+        <div class="container">
+            <div class="row">
+                <!-- Main Product List -->
+                <div class="col-md-9">
+                    <div class="row">
+                        <?php foreach ($sphome as $sp) { ?>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card product-item shadow-sm">
                                     <div class="product-image">
-                                        <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id']?>">
-                                            <img src="upload/<?php echo $sp['img']?>" alt="Product Image"  height="240px">
+                                        <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>">
+                                            <img src="upload/<?php echo $sp['img'] ?>" class="card-img-top" alt="Product Image" height="240px">
                                         </a>
-                                        <div class="product-action">
-                                        
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id']?>"><i class="fa fa-search"></i></a>
-                                            <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>"><i class="fa fa-cart-plus"></i></a>
-                                            <form action="index.php?act=addcart" method="post">
-                                        
-                                        <input type="hidden" name="id_user" value="<?php echo $tk['id_user']?>">
-                                            <input type="hidden" name="id_sp" value="<?php echo $sp['id']?>">
-                                                <input type="hidden" name="img" value="<?php echo $sp['img']?>">
-                                                <input type="hidden" name="tensp" value="<?php echo $sp['tensp']?>">
-                                                <input type="hidden" name="gia" value="<?php echo $sp['gia']?>">
-                                                <?php foreach ($listsize as $size ) {
-                                            ?>
-                                            
-                                               <input type="hidden" name="size" id="size<?php echo $size['idsize']?>" value="<?php echo $size['idsize']?>">
-                                               <?php
-                                        }?>
-                                        <?php foreach ($listmau as $mau ) {
-                                            ?><input type="hidden" name="mau" id="color<?php echo $mau['idmau']?>" value="<?php echo $mau['idmau']?>">
-                                               <?php
-                                        }?>
-                                              
-                                              </form>
+                                        <div class="product-action position-absolute top-0 end-0 p-2">
+                                            <a href="#" class="btn btn-outline-danger btn-sm"><i class="fa fa-heart"></i></a>
+                                            <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>" class="btn btn-outline-secondary btn-sm"><i class="fa fa-search"></i></a>
+                                            <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>" class="btn btn-outline-success btn-sm"><i class="fa fa-cart-plus"></i></a>
                                         </div>
                                     </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="index.php?act=sanphamct&idsp=<?php echo $sp['id']?>"><?php echo $sp['tensp']?></a></div>
-                                        <div class="ratting">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">
+                                            <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>" class="text-dark text-decoration-none"><?php echo $sp['tensp'] ?></a>
+                                        </h5>
+                                        <div class="ratting text-warning mb-2">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                         </div>
-                                        <div class="price"> <?php echo $sp['gia']?></div>
+                                        <div class="price text-danger h6"><?php echo $sp['gia'] ?> VND</div>
                                     </div>
                                 </div>
                             </div>
-                                <?php
-                            }?>
-                            <!-- <div class="col-lg-4">
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh1.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">Lenovo Slim 7 Pro X</a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price"> 22.890.000  <span>29.990.000</span></div>
-                                    </div>/-strong/-heart:>:o:-((:-h </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh2.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">Acer Nitro 5 AN515-58-56CH </a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price">21.590.000  <span>26.990.000</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh3.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">Acer Nitro 5 AN515-58-57QW </a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>/-strong/-heart:>:o:-((:-h <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price">16.990.000  <span>21.990.000</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh4.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">Dell Latitude 5400</a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price">6.490.000  <span>9.990.000</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh5.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>/-strong/-heart:>:o:-((:-h <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">Asus TUF Gaming F15</a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price">16.890.000  <span>19.990.000</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh6.png" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">Asus TUF Dash F15 2022</a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price">30.890.000 <span>35.990.000</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh7.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">/-strong/-heart:>:o:-((:-h <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">HP Envy x360 2-in-1 2023 15-fh0013dx 7H1S7UA </a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price">41.290.000 <span>50.890.000</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh8.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">HP Envy x360 2-in-1 14-es0013dx</a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price">15.490.000 <span>19.990.000</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">/-strong/-heart:>:o:-((:-h <div class="product-item">
-                                    <div class="product-image">
-                                        <a href="product-detail.php">
-                                            <img src="img/anh9.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="cart.php"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="product-detail.php"><i class="fa fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="title"><a href="product-detail.php">ASUS ROG Zephyrus M16 GU603ZM</a></div>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="price">30.890.000  <span>35.990.000đ</span></div>
-                                    </div>
-                                </div>
-                            </div> -->
-                        </div>
-                        
-                        <!-- <div class="col-lg-12">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1">Trước</a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Sau</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div> -->
+                        <?php } ?>
                     </div>
-                    
-                    
-                    
-                    <div class="col-md-3">
-                        <div class="sidebar-widget category">
-                            <h2 class="title">Danh mục</h2>
-                            <ul><?php 
-                                foreach ($listdm as $dm) {
-                                    ?>
-                                    <li><a href="index.php?act=sanpham&iddm=<?php echo $dm['id']?>"><?php echo $dm['name_dm']?></a></li>
-                                    <?php
-                                }
-                                ?>
-                                
-                                <!-- <li><a href="#">Hp</a></li>
-                                <li><a href="#">Asus</a></li>
-                                <li><a href="#">Lenovo</a></li>
-                                <li><a href="#">Macbook</a></li> -->
-                            </ul>
-                        </div>
-                        
-                        <div class="col-md-30">
-                            <h2 class="title">Sản phẩm top 10</h2>
-                            <ul >
-                            <?php 
-                                foreach ($sptop10 as $sp) {
-                                    ?>
-                                    <li ><a href="index.php?act=sanphamct&idsp=<?php echo $sp['id']?>"><?php echo $sp['tensp']?></a></li>
-                                    <?php
-                                }
-                                ?>
-                                
-                                <!-- <li><a href="#">Laptop Asus UX3402ZA-KM219W </a></li>
-                                <li><a href="#">Laptop Asus Zenbook UX363EA-HP726W </a></li>
-                                <li><a href="#">HP EliteBook Dragonfly G3 6Z979PA</a></li>
-                                <li><a href="#"> Laptop HP  14-ef0030TU 6K773PA</a></li>
-                                <li><a href="#">Laptop LG Gram 14Z90Q-G.AH75A5 </a></li>
-                                <li><a href="#">Laptop Dell Latitude 5420 L5420I714WP</a></li>
-                                <li><a href="#"> Laptop Dell XPS 13 9320 5CG56</a></li>
-                                <li><a href="#">Laptop Lenovo Thinkpad 21C1006YVA</a></li>
-                                <li><a href="#">Laptop Lenovo Thinkpad 21E8003FVN</a></li>
-                                <li><a href="#">Laptop Lenovo Thinkpad 21E8S02500 </a></li> -->
-                            </ul>
-                        </div>
-                        
-                        
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-md-3">
+                    <div class="sidebar-widget mb-4">
+                        <h4 class="title">Danh mục</h4>
+                        <ul class="list-group">
+                            <?php foreach ($listdm as $dm) { ?>
+                                <li class="list-group-item">
+                                    <a href="index.php?act=sanpham&iddm=<?php echo $dm['id'] ?>" class="text-decoration-none"><?php echo $dm['name_dm'] ?></a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-widget">
+                        <h4 class="title">Sản phẩm top 10</h4>
+                        <ul class="list-group">
+                            <?php foreach ($sptop10 as $sp) { ?>
+                                <li class="list-group-item">
+                                    <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>" class="text-decoration-none"><?php echo $sp['tensp'] ?></a>
+                                </li>
+                            <?php } ?>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Product List End -->
+    </div>
+    <!-- Product List End -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
