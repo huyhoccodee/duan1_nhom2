@@ -14,6 +14,8 @@ include "model/sanpham.php";
 include "model/danhmuc.php";
 $sphome= loadall_spkobt($kyw="",$iddm=0);
 $sptop10=load_sanpham_top10();
+$listsize=loadall_size();
+$listmau=loadall_mau();
 if (isset($_GET['act'])&&($_GET['act']!="")) {
     $act=$_GET['act'];
     switch ($act) {
@@ -244,6 +246,19 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                     $sptop10=load_sanpham_top10();
                     
                     include "view/product_list.php";
+                    break;
+                // chi tiet san pham
+                case 'sanphamct':
+                    if (isset($_GET['idsp'])&& ($_GET['idsp']>0) ) {
+                        $id=$_GET['idsp'];
+                        $sp=loadone_sanpham($id);   
+                        $iddm=$sp['id_dm'];
+                        $listspcungloai=load_sanpham_cungloai($id,$iddm);
+                        $listdm=loadall_danhmuc();
+                        include "view/product_detail.php";
+                    } else {
+                        include "view/trangchu.php";
+                    }
                     break;
         default:
             include "view/trangchu.php";
