@@ -6,7 +6,7 @@ include "../model/danhmuc.php";
 include "../model/voucher.php";
 include "../model/dangky.php";
 include "../model/sanpham.php";
-
+include "../model/donhang.php";
 
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
@@ -303,7 +303,38 @@ if (isset($_GET['act'])) {
                 $listsanpham=loadall_sanpham();
                 include "sanpham/list.php";
                 break;
-        
+        // don hang
+        case 'listdh':
+            $listdonhang=loadall_donhang();
+            include "donhang/list.php";
+        break;
+        case 'xoabill':
+            if(isset($_GET['id'])&&($_GET['id']>0)){
+                delete_donhang($_GET['id']);
+              }
+              $listdonhang=loadall_donhang();
+            include "donhang/list.php";
+        break;
+        case 'suabill':
+            if(isset($_GET['id'])&&($_GET['id']>0)){
+                $dh=loadone_donhang($_GET['id']);
+              }
+              $listpttt=loadall_pttt();
+              $listtrangthai=loadall_trangthaidh();
+              $listmgg=loadall_mgg();
+            include "donhang/update.php";
+        break;
+        case 'updatedh':
+            if(isset($_POST['capnhat'])&&($_POST['capnhat'])){
+                $id=$_POST['id'];
+                $id_trangthai=$_POST['idtrangthai'];
+                update_donhang($id,$id_trangthai);
+                $thongbao="Cập nhật thành công";
+            }
+            $listtrangthai=loadall_trangthaidh();
+            $listdonhang=loadall_donhang();
+            include "donhang/list.php";
+        break;
 
         // Hành động mặc định
         default:

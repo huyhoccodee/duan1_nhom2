@@ -2,6 +2,7 @@
 $getCountCategories = count(loadall_danhmuc());
 $getCountAccounts = count(loadall_dangky());
 $getCountProducts = count(loadall_spkbt());
+$getCountOrders = count(loadall_donhang());
 ?>
 <div class="container-fluid py-4 pb-0">
     <div class="row">
@@ -73,6 +74,9 @@ $getCountProducts = count(loadall_spkbt());
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Đơn hàng</p>
+                                <h5 class="font-weight-bolder mb-0">
+                                    <?= $getCountOrders; ?>
+                                </h5>
                             </div>
                         </div>
                         <div class="col-4 text-end">
