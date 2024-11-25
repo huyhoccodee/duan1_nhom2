@@ -105,7 +105,7 @@
                             <div class="dropdown-menu">
                                 <a href="index.php?act=lienhe" class="dropdown-item">Liên hệ</a>
                                 <a href="index.php?act=chinhsach" class="dropdown-item">Chính sách</a>
-                                <a href="" class="dropdown-item">Tài khoản của tôi</a>
+                                <a href="index.php?act=taikhoan" class="dropdown-item">Tài khoản của tôi</a>
 
                             </div>
                         </div>

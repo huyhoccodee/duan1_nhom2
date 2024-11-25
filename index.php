@@ -362,6 +362,115 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                                 header('location: index.php?act=addcart');
                             }
                      break;
+
+                     case 'checkout':
+                        unset($_SESSION['error']);
+                        $tt = 0;
+                    
+                        // Kiểm tra mã giảm giá
+                        if (isset($_POST['apdungma']) && ($_POST['apdungma'])) {
+                            $name_magg = $_POST['name_magg'];
+                            $checkmagg = null;
+                            $sql = "SELECT * FROM magiamgia WHERE name_magg ='$name_magg' AND is_delete=1";
+                            $checkmagg = pdo_query_one($sql);
+                    
+                            if (is_array($checkmagg)) {
+                                // Giảm số lượng mã giảm giá
+                                $sql = "UPDATE magiamgia SET soluong = soluong - 1 WHERE name_magg ='$name_magg'";
+                                pdo_execute($sql);
+                    
+                                // Xóa mã giảm giá khi số lượng bằng 0
+                                $sql = "UPDATE magiamgia SET is_delete = 0 WHERE soluong = 0";
+                                pdo_execute($sql);
+                    
+                                $thongbao = "Nhập mã giảm giá thành công";
+                            } else {
+                                $thongbao = "Mã giảm giá này không tồn tại";
+                            }
+                        }
+                    
+                        // Kiểm tra thông tin thanh toán khi người dùng nhấn 'Đặt hàng'
+                        if (isset($_POST['dathang']) && ($_POST['dathang'])) {
+                            $id_user = $_SESSION['user']['id'];
+                            $bill_name = $_POST['bill_name'];
+                            $bill_diachi = $_POST['bill_diachi'];
+                            $bill_sdt = $_POST['bill_sdt'];
+                            $bill_email = $_POST['bill_email'];
+                            $id_pttt = $_POST['id_pttt'];
+                            $ngaydathang = date("Y-m-d ");
+                            
+                            // Kiểm tra tổng (total)
+                            $total = isset($_POST['total']) ? $_POST['total'] : 0;
+                    
+                            // Kiểm tra các trường thông tin
+                            if (empty($bill_email)) {
+                                $_SESSION['error']['email'] = 'Bạn chưa nhập email';
+                            } else {
+                                $regex_email = "/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/";
+                                if (!preg_match($regex_email, $bill_email)) {
+                                    $_SESSION['error']['email'] = 'Email không hợp lệ';
+                                }
+                            }
+                    
+                            if (empty($bill_name)) {
+                                $_SESSION['error']['name'] = 'Bạn chưa nhập tên';
+                            } else {
+                                $regex_name = "/^[\p{L}\s]+$/u"; // Chỉ cho phép chữ cái và khoảng trắng (hỗ trợ tiếng Việt).
+                                if (!preg_match($regex_name, $bill_name)) {
+                                    $_SESSION['error']['name'] = 'Tên không hợp lệ, chỉ được chứa chữ cái và khoảng trắng';
+                                }
+                            }
+                    
+                            if (empty($bill_diachi)) {
+                                $_SESSION['error']['diachi'] = 'Bạn chưa nhập địa chỉ';
+                            } else {
+                                if (strlen($bill_diachi) < 10) {
+                                    $_SESSION['error']['diachi'] = 'Địa chỉ quá ngắn, tối thiểu 10 ký tự';
+                                }
+                            }
+                    
+                            if (empty($bill_sdt)) {
+                                $_SESSION['error']['sdt'] = 'Bạn chưa nhập số điện thoại';
+                            } else {
+                                $regexPhone = '/^0[0-9]{9}$/';
+                                if (!preg_match($regexPhone, $bill_sdt)) {
+                                    $_SESSION['error']['sdt'] = 'Số điện thoại không hợp lệ';
+                                }
+                            }
+                    
+                            // Nếu không có lỗi, thực hiện đặt hàng
+                            if (empty($_SESSION['error'])) {
+                                // Thêm đơn hàng vào database
+                                $id_bill = insert_bill($id_user, $bill_name, $bill_diachi, $bill_sdt, $bill_email, $id_pttt, $ngaydathang, $total);
+                                $_SESSION['id_bill'] = $id_bill;
+                    
+                                // Xử lý các sản phẩm trong giỏ hàng
+                                if (isset($_SESSION['giohang']) && count($_SESSION['giohang']) > 0) {
+                                    foreach ($_SESSION['giohang'] as $item) {
+                                        addtocart($id_user, $item[0], $item[1], $item[2], $item[3], $item[4], $id_bill, $item[5], $item[6], $item[9]);
+                                    }
+                                    unset($_SESSION['giohang']);
+                                    header('location: index.php?act=taikhoan');
+                                }
+                            }
+                        }
+                    
+                        // Bao gồm file view để hiển thị giao diện thanh toán
+                        include "view/checkout.php";
+                        break;
+
+                        case 'taikhoan':
+                            include "view/my-account.php";
+                            break;
+                        case 'chitietdh':
+                            if (isset($_GET['id'])&& ($_GET['id']>0) ) {
+                                $idbill=$_GET['id'];
+                                $listctdh=getcart($idbill);
+                            }
+                            $id_user= $_SESSION['user']['id'];
+                            $dh=getbill($id_user);
+                            include "view/chitietdh.php";
+                        break;
         default:
             include "view/trangchu.php";
             break;
