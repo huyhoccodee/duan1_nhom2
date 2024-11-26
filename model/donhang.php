@@ -62,7 +62,6 @@ function getbillinfo($id_user){
         $listtrangthai=pdo_query($sql);
         return $listtrangthai;
     }
-    
     function loadall_pttt(){
         $sql="select * from phuongthuctt";
         $listpttt=pdo_query($sql);
