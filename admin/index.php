@@ -358,13 +358,15 @@ if (isset($_GET['act'])) {
             $listdonhang = loadall_donhang();
             include "donhang/list.php";
             break;
-
+            
         // Hành động mặc định
         default:
+        $listthongke=loadall_thongke();
             include "home.php";
             break;
     }
 } else {
+    $listthongke=loadall_thongke();
     include "home.php";
 }
 

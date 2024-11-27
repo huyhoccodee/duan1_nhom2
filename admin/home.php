@@ -107,7 +107,20 @@ $getCountOrders = count(loadall_donhang());
                         </thead>
                         <tbody>
                         <!-- Đổ dữ liệu -->
-                        
+                        <?php foreach ($listthongke as $thongke) {
+                        extract($thongke);
+                         ?>
+                        <tr>
+                            <td><?php echo $madm ?></td>
+                            <td><?php echo $tendm?></td>
+                            <td><?php echo $countsp?></td>
+                            <td><?php echo $maxprice?></td>
+                            <td><?php echo $minprice?></t>
+                            <td><?php echo $avgprice?></td>
+       
+                        </tr>
+                        <?php
+                        }?>
                         </tbody>
                     </table>
                 </div>
