@@ -489,6 +489,19 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                             $dh=getbill($id_user);
                             include "view/chitietdh.php";
                         break;
+                        case 'huydh':
+                            if (isset($_GET['id'])&& ($_GET['id']>0) ) {
+                                $idbill=$_GET['id'];
+                                $listbt= getbt_cart($idbill);
+                                foreach ($listbt as $id_bt) {
+                                      $soluong=getsoluong($idbill,$id_bt['id_spbt']);
+                                 $huy= huydh($idbill,$soluong['soluong'],$id_bt['id_spbt'] );
+                                }
+                             
+                            }
+                            
+                            include "view/my-account.php";
+                            break;
         default:
             include "view/trangchu.php";
             break;
