@@ -9,7 +9,7 @@
     }
     function loadall(){
         $sql="select * from magiamgia order by id desc";
-            $listvoucher=pdo_query($sql);
-            return $listvoucher;
+        $listvoucher=pdo_query($sql);
+        return $listvoucher;
     }
 ?>
