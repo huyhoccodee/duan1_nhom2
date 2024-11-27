@@ -79,30 +79,37 @@
                             </thead>
                             <tbody>
                                 <?php
-                                $i = 0;
-                                $tong = 0;
-                                if (!empty($_SESSION['giohang'])) {
-                                    foreach ($_SESSION['giohang'] as $item) {
+                                    $i = 0;
+                                    $tong = 0;
+                                    if (!empty($_SESSION['giohang'])) {
+                                        foreach ($_SESSION['giohang'] as $item) {
                                         $thanhtien = $item[3] * $item[4];
                                         $tong += $thanhtien;
-                                        $xoasp = '<a href="index.php?act=delcart&i=' . $i . '" class="btn btn-danger btn-sm" >Xóa</a>';
+                                        // $xoasp = '<a href="index.php?act=delcart&i=' . $i . '" class="btn btn-danger btn-sm">Xóa</a>';
+                                        $xoasp = '<a href="index.php?act=delcart&i=' . $i . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?\')">Xóa</a>';
+                                        $increaseQty = '<form method="POST" action="index.php?act=increase&i=' . $i . '" style="display:inline;">
+                                            <button type="submit" class="btn btn-success btn-sm">+</button>
+                                                </form>';
+                                        $decreaseQty = '<form method="POST" action="index.php?act=decrease&i=' . $i . '" style="display:inline;">
+                                            <button type="submit" class="btn btn-warning btn-sm">-</button>
+                                                </form>';
                                         echo '
-                                            <tr class="text-center">
-                                                <td>' . ($i + 1) . '</td>
-                                                <td><img src="upload/' . $item[1] . '" alt="Image" class="img-thumbnail" style="width: 80px; height: 80px;"></td>
-                                                <td>' . $item[2] . '</td>
-                                                <td>' . number_format($item[3], 0, ',', '.') . '</td>
-                                                <td>' . $item[7] . '</td>
-                                                <td>' . $item[8] . '</td>
-                                                <td>' . $item[4] . '</td>
-                                                <td>' . number_format($thanhtien, 0, ',', '.') . '</td>
-                                                <td>' . $xoasp . '</td>
-                                            </tr>';
+                                                <tr class="text-center">
+                                                    <td>' . ($i + 1) . '</td>
+                                                    <td><img src="upload/' . $item[1] . '" alt="Hình ảnh" class="img-thumbnail" style="width: 80px; height: 80px;"></td>
+                                                    <td>' . $item[2] . '</td>
+                                                    <td>' . number_format($item[3], 0, ',', '.') . '</td>
+                                                    <td>' . $item[7] . '</td>
+                                                    <td>' . $item[8] . '</td>
+                                                    <td>' . $decreaseQty . ' ' . $item[4] . ' ' . $increaseQty . '</td>
+                                                    <td>' . number_format($thanhtien, 0, ',', '.') . '</td>
+                                                    <td>' . $xoasp . '</td>
+                                                </tr>';
                                         $i++;
+                                        }
+                                    } else {
+                                        echo '<tr><td colspan="9" class="text-center">Giỏ hàng của bạn hiện đang trống.</td></tr>';
                                     }
-                                } else {
-                                    echo '<tr><td colspan="9" class="text-center">Giỏ hàng của bạn hiện đang trống.</td></tr>';
-                                }
                                 ?>
                             </tbody>
                         </table>
