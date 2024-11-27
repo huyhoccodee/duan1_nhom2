@@ -30,7 +30,7 @@
                 <div class="tab-content">
                     <!-- Orders Tab Start -->
                     <div class="tab-pane fade show active" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
-                        <h2 class="text-primary mb-4"><strong>Lịch sử Đơn Hàng</strong></h2>
+                        <h2 class="text-primary mb-4">Lịch sử Đơn Hàng</h2>
 
                         <div class="table-responsive">
                             <?php 
