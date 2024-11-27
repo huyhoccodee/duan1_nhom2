@@ -337,6 +337,24 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                         
                     
                     break;
+
+                    case 'increase':
+                        // Xử lý tăng số lượng trong giỏ hàng
+                        $index = isset($_GET['i']) ? (int)$_GET['i'] : 0;
+                        if (isset($_SESSION['giohang'][$index])) {
+                            $_SESSION['giohang'][$index][4]++; // Tăng số lượng
+                        }
+                        header('Location: index.php?act=addcart'); // Quay lại giỏ hàng
+                        exit();
+                        case 'decrease':
+                            // Xử lý giảm số lượng trong giỏ hàng
+                            $index = isset($_GET['i']) ? (int)$_GET['i'] : 0;
+                            if (isset($_SESSION['giohang'][$index]) && $_SESSION['giohang'][$index][4] > 1) {
+                                $_SESSION['giohang'][$index][4]--; // Giảm số lượng
+                            }
+                            header('Location: index.php?act=addcart'); // Quay lại giỏ hàng
+                            exit();
+                   
                          /**Xóa đơn hàng */
                     case 'delcart':
                         //xóa all
@@ -357,7 +375,7 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                             
                             if(isset($_SESSION['giohang'])&&(count($_SESSION['giohang'])==0)){
                                 
-                                header('location: index.php');
+                                header('location: index.php?act=addcart');
                             }else{
                                 header('location: index.php?act=addcart');
                             }
