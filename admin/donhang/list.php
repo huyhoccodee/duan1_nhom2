@@ -15,6 +15,7 @@
                             <th>Trạng thái</th>
                             <th>Ngày đặt</th>
                             <th>Thành tiền</th>
+                            <th>Chi tiết(Hủy)</th>
                             <th>Tùy chọn</th>
                         </tr>
                     </thead>
@@ -48,6 +49,15 @@
                             <td><?php echo $trangthai; ?></td>
                             <td><?php echo $ngaydathang; ?></td>
                             <td><?php echo $total; ?></td>
+                            <td>
+                                            <?php 
+                                            if ($trangthai == 'Hủy đơn hàng' && !empty($lydohuy)) {
+                                                echo $lydohuy; // Hiển thị lý do hủy
+                                            } else {
+                                                echo "---"; // Hiển thị "---" nếu chưa hủy
+                                            }
+                                            ?>
+                                        </td>
                             <td>
                                 <a href="index.php?act=suabill&id=<?php echo $id; ?>">
                                     <input type="button" value="Sửa" class="btn btn-danger">

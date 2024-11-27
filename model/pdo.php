@@ -3,106 +3,106 @@ function pdo_get_connection(){
     $dburl = "mysql:host=localhost;dbname=duan1;charset=utf8";
     $username = 'root';
     $password = '';
-    $conn = new PDO($dburl, $username, $password);
-    $conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $conn;
-}
-/**
- * @param string
- * @param array
- * @throws PDOException
- */
-function pdo_execute($sql){
-    $sql_args = array_slice(func_get_args(),1);
-    try{
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt-> execute($sql_args);
-    }
-    catch(PDOException $e){
-        throw $e;
-    }
-    finally{
-        unset($conn);
-    }
-}
-function pdo_execute_return_lastInsertId($sql){
-    $sql_args = array_slice(func_get_args(),1);
-    try{
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt-> execute($sql_args);
-        return $conn -> lastInsertId();
-    }
-    catch(PDOException $e){
-        throw $e;
-    }
-    finally{
-        unset($conn);
-    }
-}
-/**
- * @param string
- * @param array
- * @return array
- * @throws PDOException
- */
-function pdo_query($sql){
-    $sql_args = array_slice(func_get_args(),1);
     try {
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt -> execute($sql_args);
-        $rows = $stmt->fetchAll();
-        return $rows;
+        $conn = new PDO($dburl, $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $conn;
     } catch (PDOException $e) {
-        throw $e;
-    }
-    finally{
-        unset($conn);
+        echo "Connection failed: " . $e->getMessage();
     }
 }
-/**
- * @param string
- * @param array
- * @return array
- * @throws PDOException
- */
-function pdo_query_one($sql){
-    $sql_args = array_slice(func_get_args(),1);
-    try {
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt -> execute($sql_args);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row;
-    } catch (PDOException $e) {
-        throw $e;
-    }
-    finally{
-        unset($conn);
-    }
-}
-/**
- * @param string
- * @param array
- * @return giá trị
- * @throws PDOException
- */
-function pdo_query_value($sql){
-    $sql_args = array_slice(func_get_args(),1);
-    try {
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt -> execute($sql_args);
-        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return array_values($row)[0];
-    } catch (PDOException $e) {
-        throw $e;
-    }
-    finally{
-        unset($conn);
-    }
 
+/**
+ * @param string
+ * @param array
+ * @throws PDOException
+ */
+function pdo_execute($sql, $params = []){
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->rowCount();  // Trả về số dòng bị ảnh hưởng
+    } catch(PDOException $e) {
+        throw $e;  // Ném lỗi nếu có
+    } finally {
+        unset($conn);  // Đảm bảo đóng kết nối
+    }
+}
+
+function pdo_execute_return_lastInsertId($sql, $params = []){
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        return $conn->lastInsertId();  // Trả về ID của bản ghi vừa chèn
+    } catch(PDOException $e) {
+        throw $e;
+    } finally {
+        unset($conn);  // Đảm bảo đóng kết nối
+    }
+}
+
+/**
+ * @param string
+ * @param array
+ * @return array
+ * @throws PDOException
+ */
+function pdo_query($sql, $params = []){
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);  // Trả về tất cả các dòng kết quả
+    } catch (PDOException $e) {
+        throw $e;
+    } finally {
+        unset($conn);  // Đảm bảo đóng kết nối
+    }
+}
+
+/**
+ * @param string
+ * @param array
+ * @return array
+ * @throws PDOException
+ */
+function pdo_query_one($sql, $params = []){
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        // Đảm bảo params là một mảng, ngay cả khi chỉ có một tham số
+        if (!is_array($params)) {
+            $params = [$params];  // Chuyển thành mảng nếu không phải mảng
+        }
+        $stmt->execute($params);  // Thực thi câu lệnh với tham số
+        return $stmt->fetch(PDO::FETCH_ASSOC);  // Trả về một dòng kết quả
+    } catch (PDOException $e) {
+        throw $e;
+    } finally {
+        unset($conn);  // Đảm bảo đóng kết nối
+    }
+}
+
+
+/**
+ * @param string
+ * @param array
+ * @return mixed
+ * @throws PDOException
+ */
+function pdo_query_value($sql, $params = []){
+    try {
+        $conn = pdo_get_connection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? array_values($row)[0] : null;  // Trả về giá trị đầu tiên nếu có, nếu không trả về null
+    } catch (PDOException $e) {
+        throw $e;
+    } finally {
+        unset($conn);  // Đảm bảo đóng kết nối
+    }
 }
 ?>

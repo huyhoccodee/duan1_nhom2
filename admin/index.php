@@ -324,17 +324,40 @@ if (isset($_GET['act'])) {
               $listmgg=loadall_mgg();
             include "donhang/update.php";
         break;
+        // case 'updatedh':
+        //     if(isset($_POST['capnhat'])&&($_POST['capnhat'])){
+        //         $id=$_POST['id'];
+        //         $id_trangthai=$_POST['idtrangthai'];
+        //         update_donhang($id,$id_trangthai);
+        //         $thongbao="Cập nhật thành công";
+        //     }
+        //     $listtrangthai=loadall_trangthaidh();
+        //     $listdonhang=loadall_donhang();
+        //     include "donhang/list.php";
+        // break;
         case 'updatedh':
-            if(isset($_POST['capnhat'])&&($_POST['capnhat'])){
-                $id=$_POST['id'];
-                $id_trangthai=$_POST['idtrangthai'];
-                update_donhang($id,$id_trangthai);
-                $thongbao="Cập nhật thành công";
+            if (isset($_POST['capnhat']) && ($_POST['capnhat'])) {
+                $id = $_POST['id'];
+                $id_trangthai = $_POST['idtrangthai'];
+        
+                // Kiểm tra trạng thái hiện tại của đơn hàng
+                $current_status = get_current_status($id);  // Hàm lấy trạng thái hiện tại từ cơ sở dữ liệu
+        
+                // Nếu trạng thái hiện tại đã là "Đã hủy", không cho phép thay đổi
+                if ($current_status == 'Hủy đơn hàng') {
+                    $thongbao = "Không thể thay đổi trạng thái vì đơn hàng đã hủy.";
+                } else {
+                    // Cập nhật trạng thái đơn hàng
+                    update_donhang($id, $id_trangthai);
+                    $thongbao = "Cập nhật thành công";
+                }
             }
-            $listtrangthai=loadall_trangthaidh();
-            $listdonhang=loadall_donhang();
+        
+            // Lấy danh sách trạng thái và đơn hàng để hiển thị lại
+            $listtrangthai = loadall_trangthaidh();
+            $listdonhang = loadall_donhang();
             include "donhang/list.php";
-        break;
+            break;
 
         // Hành động mặc định
         default:

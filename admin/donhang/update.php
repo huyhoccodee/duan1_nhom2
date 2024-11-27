@@ -2,8 +2,13 @@
 if(is_array($dh)){
     extract($dh);
 }
+
 $dh = loadone_donhang($id); // Lấy đơn hàng theo ID
 $current_status = $dh['id_trangthai']; // Trạng thái hiện tại của đơn hàng
+
+// Danh sách trạng thái có thể thay đổi theo thứ tự
+$valid_statuses = [1, 2, 3, 4, 5]; // Các trạng thái hợp lệ từ 1 đến 5
+$cancel_status = 6; // Trạng thái "Hủy đơn hàng" có id = 6
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -41,14 +46,24 @@ $current_status = $dh['id_trangthai']; // Trạng thái hiện tại của đơn
                         </div>
                         <div class="mb-3">
                             <label for="idtrangthai" class="form-label">Trạng thái</label>
-                            <select name="idtrangthai" class="form-select">
-                            <?php foreach ($listtrangthai as $tt) { ?>
-                            <option value="<?php echo $tt['idtrangthai']; ?>"
-                                <?php echo ($current_status == $tt['idtrangthai']) ? 'selected' : ''; ?>>
-                                <?php echo $tt['trangthai']; ?>
-                            </option>
-                            <?php } ?>
-                        </select>
+                            <select name="idtrangthai" class="form-select" <?php if ($current_status == $cancel_status) echo 'disabled'; ?>>
+                                <?php 
+                                // Nếu trạng thái đơn hàng chưa hủy, cho phép chọn trạng thái theo thứ tự
+                                if ($current_status != $cancel_status) {
+                                    $next_status = $current_status < 5 ? $current_status + 1 : $current_status; // Trạng thái tiếp theo
+
+                                    // Vòng lặp cho phép chọn trạng thái theo thứ tự từ
+                                    foreach ($valid_statuses as $status) {
+                                        if ($status >= $next_status) {
+                                            echo '<option value="' . $status . '" ' . ($current_status == $status ? 'selected' : '') . '>' . get_status_name($status) . '</option>';
+                                        }
+                                    }
+                                } else {
+                                    // Nếu trạng thái đã là "Hủy đơn hàng", chỉ hiển thị trạng thái "Hủy đơn hàng"
+                                    echo '<option value="' . $cancel_status . '" selected>Hủy đơn hàng</option>';
+                                }
+                                ?>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="ngaydathang" class="form-label">Ngày đặt hàng</label>
@@ -58,12 +73,16 @@ $current_status = $dh['id_trangthai']; // Trạng thái hiện tại của đơn
                             <label for="total" class="form-label">Thành tiền</label>
                             <input type="text" name="total" class="form-control" value="<?php echo $total ?>" disabled>
                         </div>
+                        <div class="mb-3">
+                            <label for="lydohuy" class="form-label">Lý do hủy</label>
+                            <textarea name="lydohuy" class="form-control" rows="3" disabled><?php echo isset($lydohuy) ? $lydohuy : ''; ?></textarea>
+                        </div>
                         <div>
                             <input type="hidden" name="id" value="<?php echo $id ?>">
-                            <a href="index.php?act=listdh "><input type="submit" name="capnhat"  value="Cập nhật" class="btn btn-primary"></a>
+                            <button type="submit" name="capnhat" value="Cập nhật" class="btn btn-primary">Cập nhật</button>
                             <a href="index.php?act=listdh" class="btn btn-secondary">Quay lại</a>
                         </div>
-                        <?php if (isset($thongbao) && ($thongbao != "")) echo "<div class='alert alert-info mt-3'>$thongbao</div>"; ?>
+                        <?php if (isset($thongbao) && $thongbao != "") echo "<div class='alert alert-info mt-3'>$thongbao</div>"; ?>
                     </form>
                 </div>
             </div>
