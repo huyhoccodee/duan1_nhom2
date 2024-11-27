@@ -9,11 +9,16 @@ function getcart($idbill){
     $listctdh=pdo_query($sql);
     return $listctdh;
 }
-function huydh($idbill,$soluong,$id_bt){
-    $sql="update bill set id_trangthai='4' where id=".$idbill;
-        pdo_execute($sql);
-    $query ="UPDATE spbienthe SET soluong = soluong + '$soluong' WHERE id_bt='$id_bt'";
-        pdo_execute($query);
+
+function huydh($idbill, $soluong, $id_spbt, $reason) {
+    // Cập nhật trạng thái đơn hàng thành "Hủy" và lưu lý do hủy
+    $sql = "UPDATE bill SET id_trangthai = 6, lydohuy = :reason WHERE id = :idbill";
+    pdo_execute($sql, [
+        'reason' => $reason,
+        'idbill' => $idbill
+    ]);
+
+
 }
 function getsoluong($idbill,$id_bt){
     $sql="select soluong from cart where id_bill='$idbill' and id_spbt='$id_bt'";
@@ -72,9 +77,9 @@ function getbillinfo($id_user){
         $listmgg=pdo_query($sql);
         return $listmgg;
     }
-    function update_donhang($id,$id_trangthai){
-        $sql="update bill set id_trangthai='".$id_trangthai."' where id=".$id;
-        pdo_execute($sql);
+    function update_donhang($id, $id_trangthai) {
+        $sql = "UPDATE bill SET id_trangthai = ? WHERE id = ?";
+        pdo_execute($sql, [$id_trangthai, $id]);
     }
     function loadone_donhang($id){
         $sql="select * from bill where id=".$id;
@@ -88,5 +93,23 @@ function getbillinfo($id_user){
         $listtk=pdo_query($sql);
         return $listtk;
     }
+    function get_current_status($id) {
+        $sql = "SELECT id_trangthai FROM bill WHERE id = ?";
+        $result = pdo_query_one($sql, $id);
+        return $result['id_trangthai'];
+    }
+    function get_status_name($status_id) {
+        switch ($status_id) {
+            case 1: return "Chờ xác nhận";
+            case 2: return "Đang xử lý";
+            case 3: return "Đang giao hàng";
+            case 4: return "Đã nhận hàng";
+            case 5: return "Hoàn thành";
+            case 6: return "Hủy đơn hàng";
+            default: return "Không xác định";
+        }
+    }
+    
+    
     
 ?>

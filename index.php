@@ -489,17 +489,31 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                             $dh=getbill($id_user);
                             include "view/chitietdh.php";
                         break;
+
                         case 'huydh':
-                            if (isset($_GET['id'])&& ($_GET['id']>0) ) {
-                                $idbill=$_GET['id'];
-                                $listbt= getbt_cart($idbill);
-                                foreach ($listbt as $id_bt) {
-                                      $soluong=getsoluong($idbill,$id_bt['id_spbt']);
-                                 $huy= huydh($idbill,$soluong['soluong'],$id_bt['id_spbt'] );
+                            // Kiểm tra nếu dữ liệu được gửi qua phương thức POST
+                            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                                // Lấy ID đơn hàng và lý do hủy từ form
+                                $idbill = isset($_POST['id']) ? intval($_POST['id']) : 0;
+                                $reason = isset($_POST['reason']) ? trim($_POST['reason']) : '';
+                        
+                                if ($idbill > 0 && !empty($reason)) {
+                                    // Lấy danh sách sản phẩm trong đơn hàng
+                                    $listbt = getbt_cart($idbill);
+                                    foreach ($listbt as $id_bt) {
+                                        $soluong = getsoluong($idbill, $id_bt['id_spbt']);
+                                        // Gọi hàm hủy đơn hàng và truyền lý do hủy
+                                        huydh($idbill, $soluong['soluong'], $id_bt['id_spbt'], $reason);
+                                    }
+                        
+                                    // Hiển thị thông báo thành công
+                                    $_SESSION['message'] = "Đơn hàng #{$idbill} đã được hủy thành công với lý do: '{$reason}'.";
+                                } else {
+                                    // Hiển thị thông báo lỗi
+                                    $_SESSION['error'] = "Hủy đơn hàng thất bại. Vui lòng nhập đầy đủ thông tin.";
                                 }
-                             
                             }
-                            
+                        
                             include "view/my-account.php";
                             break;
         default:
