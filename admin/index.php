@@ -1,6 +1,7 @@
 <?php
 
-include "header.php";
+include "view/header.php";
+include "view/sidebar.php";
 include "../model/pdo.php";
 include "../model/danhmuc.php";
 include "../model/voucher.php";
@@ -26,14 +27,14 @@ if (isset($_GET['act'])) {
                     $message = "Thêm danh mục thành công.";
                 }
             }
-            include "danhmuc/add.php";
+            include "view/danhmuc/add.php";
             break;
 
 
         // Hiển thị danh sách danh mục
         case 'listdm':
             $listdanhmuc = loadall_danhmuc();
-            include "danhmuc/listdm.php";
+            include "view/danhmuc/listdm.php";
             break;
 
         // Sửa danh mục
@@ -42,7 +43,7 @@ if (isset($_GET['act'])) {
                 $id=$_GET['id'];
                 $dm = loadone_danhmuc($id);
             }
-            include "danhmuc/updatedm.php";
+            include "view/danhmuc/updatedm.php";
             break;
 
     //    Cập nhật danh mục
@@ -79,7 +80,7 @@ if (isset($_GET['act'])) {
                 update_danhmuc($id,$tenloai);
             }
             $listdanhmuc=loadall_danhmuc();
-            include "danhmuc/listdm.php";
+            include "view/danhmuc/listdm.php";
             break;
 
 
@@ -91,7 +92,7 @@ if (isset($_GET['act'])) {
                 $message = "Xóa danh mục thành công.";
             }
             $listdanhmuc = loadall_danhmuc();
-            include "danhmuc/listdm.php";
+            include "view/danhmuc/listdm.php";
             break;
         // add voucher
         case 'addvc':
@@ -103,14 +104,14 @@ if (isset($_GET['act'])) {
                 insert_voucher($name_magg,$giamgia,$soluong);
                 $thongbao="Thêm mới thành công";
             }
-            include "voucher/add.php";  
+            include "view/voucher/add.php";  
 
         break;
         // list voucher
         case 'listvc':
             
             $listvoucher=loadall();
-            include "voucher/list.php";
+            include "view/voucher/list.php";
 
         break;
         // xoa voucher
@@ -119,7 +120,7 @@ if (isset($_GET['act'])) {
                 delete_voucher($_GET['id']);
               }
               $listvoucher=loadall();
-            include "voucher/list.php";
+            include "view/voucher/list.php";
 
         break;
         /**LIÊN HỆ */
@@ -128,7 +129,7 @@ if (isset($_GET['act'])) {
         case 'listlh':
             $sql="select * from lienhe order by lh_name";
             $listlienhe=pdo_query($sql);
-            include "lienhe/list.php";
+            include "view/lienhe/list.php";
 
         break;
 
@@ -140,7 +141,7 @@ if (isset($_GET['act'])) {
               }
               $sql="select * from lienhe order by lh_name";
               $listlienhe=pdo_query($sql);
-            include "lienhe/list.php";
+            include "view/lienhe/list.php";
             break;
 
             /**ĐĂNG KÝ */
@@ -148,7 +149,7 @@ if (isset($_GET['act'])) {
         case 'listdangky':
             
             $listdangky=loadall_dangky();
-            include "dangky/list.php";
+            include "view/dangky/list.php";
 
         break;
         // xóa đk
@@ -157,7 +158,7 @@ if (isset($_GET['act'])) {
                 delete_dangky($_GET['id']);
               }
               $listdangky=loadall_dangky();
-            include "dangky/list.php";
+            include "view/dangky/list.php";
 
         break; 
 
@@ -216,7 +217,7 @@ if (isset($_GET['act'])) {
             }
     
             $listdanhmuc = loadall_danhmuc();
-            include "sanpham/add.php";
+            include "view/sanpham/add.php";
             break;
         
         
@@ -231,7 +232,7 @@ if (isset($_GET['act'])) {
             }
             $listdanhmuc=loadall_danhmuc();
             $listsanpham=loadall_sanpham($kyw,$iddm);
-        include "sanpham/list.php";
+        include "view/sanpham/list.php";
         break; 
 
         case 'spbt':
@@ -239,7 +240,7 @@ if (isset($_GET['act'])) {
             $listdanhmuc=loadall_danhmuc();
         $listsize=loadall_size();
         $listmau=loadall_mau();
-            include "sanpham/spbt.php";
+            include "view/sanpham/spbt.php";
             break;
 
         case 'addspbt':
@@ -251,7 +252,7 @@ if (isset($_GET['act'])) {
                insert_spbt($masp,$idsize,$idmau,$soluong);
             }
             $listsanpham=loadall_sanpham();
-            include "sanpham/list.php";
+            include "view/sanpham/list.php";
             $listdanhmuc=loadall_danhmuc();
             $listsize=loadall_size();
             $listmau=loadall_mau();
@@ -264,7 +265,7 @@ if (isset($_GET['act'])) {
                 delete_sanpham($id);
             }
             $listsanpham=loadall_sanpham();
-            include "sanpham/list.php";
+            include "view/sanpham/list.php";
             break;
             case 'suasp':
                 if (isset($_GET['id'])&& ($_GET['id']>0) ) {
@@ -274,7 +275,7 @@ if (isset($_GET['act'])) {
                 $listdanhmuc=loadall_danhmuc();
             $listsize=loadall_size();
             $listmau=loadall_mau();
-                include "sanpham/update.php";
+                include "view/sanpham/update.php";
             break;
 
             case 'updatesp':
@@ -301,19 +302,19 @@ if (isset($_GET['act'])) {
                 $listsize=loadall_size();
                 $listmau=loadall_mau();
                 $listsanpham=loadall_sanpham();
-                include "sanpham/list.php";
+                include "view/sanpham/list.php";
                 break;
         // don hang
         case 'listdh':
             $listdonhang=loadall_donhang();
-            include "donhang/list.php";
+            include "view/donhang/list.php";
         break;
         case 'xoabill':
             if(isset($_GET['id'])&&($_GET['id']>0)){
                 delete_donhang($_GET['id']);
               }
               $listdonhang=loadall_donhang();
-            include "donhang/list.php";
+            include "view/donhang/list.php";
         break;
         case 'suabill':
             if(isset($_GET['id'])&&($_GET['id']>0)){
@@ -322,7 +323,7 @@ if (isset($_GET['act'])) {
               $listpttt=loadall_pttt();
               $listtrangthai=loadall_trangthaidh();
               $listmgg=loadall_mgg();
-            include "donhang/update.php";
+            include "view/donhang/update.php";
         break;
         // case 'updatedh':
         //     if(isset($_POST['capnhat'])&&($_POST['capnhat'])){
@@ -356,19 +357,19 @@ if (isset($_GET['act'])) {
             // Lấy danh sách trạng thái và đơn hàng để hiển thị lại
             $listtrangthai = loadall_trangthaidh();
             $listdonhang = loadall_donhang();
-            include "donhang/list.php";
+            include "view/donhang/list.php";
             break;
             
         // Hành động mặc định
         default:
         $listthongke=loadall_thongke();
-            include "home.php";
+            include "view/home.php";
             break;
     }
 } else {
     $listthongke=loadall_thongke();
-    include "home.php";
+    include "view/home.php";
 }
 
-include "footer.php";
+include "view/footer.php";
 ?>
