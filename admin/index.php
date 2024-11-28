@@ -8,6 +8,7 @@ include "../model/voucher.php";
 include "../model/dangky.php";
 include "../model/sanpham.php";
 include "../model/donhang.php";
+include "../model/binhluan.php";
 
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
@@ -359,6 +360,20 @@ if (isset($_GET['act'])) {
             $listdonhang = loadall_donhang();
             include "view/donhang/list.php";
             break;
+
+            /**BÌNH LUẬN */
+            case 'listbl':
+                $listbl=loadall_binhluan(0);
+                include "view/binhluan/list.php";
+                break;
+            case 'xoabl':
+                    if(isset($_GET['id']) && ($_GET['id']>0)){
+                        $id=$_GET['id'];
+                           delete_binhluan($id);
+                            }
+                           $listbl=loadall_binhluan(0);
+                           include "view/binhluan/list.php";
+                         break;
             
         // Hành động mặc định
         default:
