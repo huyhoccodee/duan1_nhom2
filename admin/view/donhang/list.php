@@ -1,3 +1,4 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <div class="main-content">
     <div class="page-content pt-4">
         <div class="container-fluid">
@@ -22,7 +23,33 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
                             <h4 class="card-title">Tất cả đơn hàng</h4>
+                            <form action="index.php" method="GET" class="form-inline">
+                                <!-- Action -->
+                                <input type="hidden" name="act" value="listdh">
+                                
+                                <!-- Select -->
+                                <div class="input-group">
+                                    <select name="filter_status" id="filter-status" class="custom-select">
+                                        <option value="">Tất cả trạng thái</option>
+                                        <option value="Chờ xác nhận" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Chờ xác nhận') ? 'selected' : '' ?>>Chờ xác nhận</option>
+                                        <option value="Đang xử lý" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Đang xử lý') ? 'selected' : '' ?>>Đang xử lý</option>
+                                        <option value="Đang giao hàng" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Đang giao hàng') ? 'selected' : '' ?>>Đang giao hàng</option>
+                                        <option value="Đã giao hàng" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Đã giao hàng') ? 'selected' : '' ?>>Đã giao hàng</option>
+                                        <option value="Hoàn thành" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Hoàn thành') ? 'selected' : '' ?>>Hoàn thành</option>
+                                        <option value="Hủy đơn hàng" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Hủy đơn hàng') ? 'selected' : '' ?>>Hủy đơn hàng</option>
+                                    </select>
+                                    
+                                    <!-- Button -->
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-filter"></i> Lọc
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
                             <table class="table table-bordered adm">
                                 <thead class="thead-dark">
@@ -33,7 +60,7 @@
                                         <th>Địa chỉ</th>
                                         <th>Số điện thoại</th>
                                         <th>Email</th>
-                                        <th>Pttt</th>
+                                        <th>Phương thức thanh toán</th>
                                         <th>Trạng thái</th>
                                         <th>Ngày đặt</th>
                                         <th>Thành tiền</th>

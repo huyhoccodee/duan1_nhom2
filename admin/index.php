@@ -307,9 +307,23 @@ if (isset($_GET['act'])) {
                 break;
         // don hang
         case 'listdh':
-            $listdonhang=loadall_donhang();
+            // Lấy danh sách tất cả đơn hàng
+            $listdonhang = loadall_donhang();
+        
+            // Nhận dữ liệu từ phương thức GET (lọc trạng thái)
+            $filter_status = isset($_GET['filter_status']) ? trim($_GET['filter_status']) : "";
+        
+            // Kiểm tra và lọc danh sách đơn hàng theo trạng thái
+            if (!empty($filter_status)) {
+                $listdonhang = array_filter($listdonhang, function ($bill) use ($filter_status) {
+                    return isset($bill['trangthai']) && $bill['trangthai'] === $filter_status;
+                });
+            }
+        
+            // Gọi view hiển thị danh sách đơn hàng
             include "view/donhang/list.php";
-        break;
+            break;
+        
         case 'xoabill':
             if(isset($_GET['id'])&&($_GET['id']>0)){
                 delete_donhang($_GET['id']);
