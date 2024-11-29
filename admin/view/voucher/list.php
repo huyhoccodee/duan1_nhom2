@@ -24,35 +24,38 @@
                         <div class="card-body">
                             <h4 class="card-title">Danh sách mã giảm giá</h4>
                             <table class="table table-bordered adm">
-                                <thead class="thead-dark ">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên mã giảm giá </th>
-                                        <th>Số tiền giảm giá</th>
-                                        
-                                        <th>Số lượng</th>
-                                        <th>Xóa</th>
-                                    </tr>
-                                </thead>
-                                <?php 
-                                foreach($listvoucher as $magiamgia){
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên mã giảm giá</th>
+                                    <th>Số tiền giảm giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Ngày hết hạn</th>
+                                    <th class ="col-2">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody class="align-middle">
+                                <?php
+                                foreach ($listvoucher as $magiamgia) {
                                     extract($magiamgia);
-                                    $xoavc="index.php?act=xoavc&id=".$id;
-                                    $suavc="index.php?act=suavc&id=".$id;
-                                echo'<tbody class="align-middle">
-                                    <tr>
-                                        <td>'.$id.'</td>
-                                        <td>'.$name_magg.'</td>
-                                        <td>'.$giamgia.'</td>
-                                        
-                                        <td>'.$soluong.'</td>
-                                        <td><a href="'.$xoavc.'"><input type="button" value="Xóa" class="btn btn-danger"></a></td>
-                                    </tr>
-                                    
-                                </tbody>';
-                                }                                
-                                
+                                    $xoavc = "index.php?act=xoavc&id=" . $id;
+                                    $updatevc = "index.php?act=updatevc&id=" . $id;
+
+                                    echo '<tr>
+                                        <td>' . $id . '</td>
+                                        <td>' . $name_magg . '</td>
+                                        <td>' . $giamgia . '</td>
+                                        <td>' . $soluong . '</td>
+                                        <td>' . $end_date . '</td>
+                                        <td>
+                                            <a href="' . $xoavc . '"><input type="button" value="Xóa" class="btn btn-danger"></a>
+                                            <a href="'. $updatevc . '"><input type="button" value="Sửa" class="btn btn-warning"></a>
+                                        </td>
+                                    </tr>';
+                                }
                                 ?>
+                            </tbody>
+
                             </table>
                             <div>
                                     <a href="index.php?act=addvc"><input type="submit" name="themmoi" value="Thêm mới" class="btn btn-primary"></a> 

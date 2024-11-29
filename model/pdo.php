@@ -17,18 +17,24 @@ function pdo_get_connection(){
  * @param array
  * @throws PDOException
  */
-function pdo_execute($sql, $params = []){
+function pdo_execute($sql, $params = []) {
     try {
-        $conn = pdo_get_connection();
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->rowCount();  // Trả về số dòng bị ảnh hưởng
-    } catch(PDOException $e) {
-        throw $e;  // Ném lỗi nếu có
+        $conn = pdo_get_connection();  // Kết nối cơ sở dữ liệu
+        $stmt = $conn->prepare($sql);  // Chuẩn bị câu lệnh SQL
+        $stmt->execute($params);  // Thực thi câu lệnh với tham số
+
+        return $stmt->rowCount();  // Trả về số dòng bị ảnh hưởng (chỉ cho các câu lệnh UPDATE, DELETE, INSERT)
+    } catch (PDOException $e) {
+        // Xử lý lỗi nếu có
+        throw $e;  
     } finally {
-        unset($conn);  // Đảm bảo đóng kết nối
+        // Đảm bảo đóng kết nối
+        if (isset($conn)) {
+            unset($conn);  // Dọn dẹp đối tượng kết nối
+        }
     }
 }
+
 
 function pdo_execute_return_lastInsertId($sql, $params = []){
     try {

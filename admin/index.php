@@ -97,17 +97,18 @@ if (isset($_GET['act'])) {
             break;
         // add voucher
         case 'addvc':
-            if(isset($_POST['themmoi'])&&($_POST['themmoi'])){
-                $name_magg=$_POST['name_magg'];
-                $giamgia=$_POST['giamgia'];
+            if (isset($_POST['themmoi']) && ($_POST['themmoi'])) {
+                $name_magg = $_POST['name_magg'];
+                $giamgia = $_POST['giamgia'];
+                $end_date = $_POST['end_date'];
+                $soluong = $_POST['soluong'];
                 
-                $soluong=$_POST['soluong'];
-                insert_voucher($name_magg,$giamgia,$soluong);
-                $thongbao="Thêm mới thành công";
+                insert_voucher($name_magg, $giamgia, $soluong, $end_date);
+                $thongbao = "Thêm mới thành công";
             }
-            include "view/voucher/add.php";  
-
-        break;
+            include "view/voucher/add.php";
+            break;
+        
         // list voucher
         case 'listvc':
             
@@ -124,6 +125,30 @@ if (isset($_GET['act'])) {
             include "view/voucher/list.php";
 
         break;
+        // Xử lý cập nhật voucher
+        case 'updatevc':
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+                // Lấy thông tin voucher cũ từ database
+                $id = $_GET['id'];
+                $voucher = loadone_voucher($id);  // Gọi hàm để lấy voucher theo ID
+            }
+
+            if (isset($_POST['capnhat']) && $_POST['capnhat']) {
+                // Lấy thông tin mới từ form
+                $name_magg = $_POST['name_magg'];
+                $giamgia = $_POST['giamgia'];
+                $soluong = $_POST['soluong'];
+                $end_date = $_POST['end_date'];  // Ngày hết hạn
+
+                // Cập nhật voucher vào cơ sở dữ liệu
+                update_voucher($id, $name_magg, $giamgia, $soluong, $end_date);
+
+                $thongbao = "Cập nhật thành công";
+            }
+
+            include "view/voucher/update.php";  // Bao gồm view để hiển thị form sửa
+            break;
+
         /**LIÊN HỆ */
         
         // list lien he
