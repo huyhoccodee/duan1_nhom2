@@ -97,17 +97,18 @@ if (isset($_GET['act'])) {
             break;
         // add voucher
         case 'addvc':
-            if(isset($_POST['themmoi'])&&($_POST['themmoi'])){
-                $name_magg=$_POST['name_magg'];
-                $giamgia=$_POST['giamgia'];
+            if (isset($_POST['themmoi']) && ($_POST['themmoi'])) {
+                $name_magg = $_POST['name_magg'];
+                $giamgia = $_POST['giamgia'];
+                $end_date = $_POST['end_date'];
+                $soluong = $_POST['soluong'];
                 
-                $soluong=$_POST['soluong'];
-                insert_voucher($name_magg,$giamgia,$soluong);
-                $thongbao="Thêm mới thành công";
+                insert_voucher($name_magg, $giamgia, $soluong, $end_date);
+                $thongbao = "Thêm mới thành công";
             }
-            include "view/voucher/add.php";  
-
-        break;
+            include "view/voucher/add.php";
+            break;
+        
         // list voucher
         case 'listvc':
             
@@ -124,6 +125,38 @@ if (isset($_GET['act'])) {
             include "view/voucher/list.php";
 
         break;
+        // Xử lý cập nhật voucher
+        case 'updatevc':
+            if (isset($_GET['id']) && $_GET['id'] > 0) {
+                // Lấy thông tin voucher cũ từ database
+                $id = $_GET['id'];
+                $voucher = loadone_voucher($id);  // Gọi hàm để lấy voucher theo ID
+            }
+        
+            if (isset($_POST['capnhat']) && $_POST['capnhat']) {
+                // Lấy thông tin mới từ form
+                $name_magg = $_POST['name_magg'];
+                $giamgia = $_POST['giamgia'];
+                $soluong = $_POST['soluong'];
+                $end_date = $_POST['end_date'];  // Ngày hết hạn
+        
+                // Kiểm tra số lượng mã giảm giá
+                if ($soluong < 0) {
+                    $thongbao = "Số lượng mã giảm giá không thể nhỏ hơn 0!";
+                } else {
+                    // Cập nhật voucher vào cơ sở dữ liệu
+                    update_voucher($id, $name_magg, $giamgia, $soluong, $end_date);
+        
+                    // Thông báo cập nhật thành công
+                    $thongbao = "Cập nhật mã giảm giá thành công!";
+                }
+            }
+        
+            // Hiển thị form sửa mã giảm giá
+            include "view/voucher/update.php";
+            break;
+        
+
         /**LIÊN HỆ */
         
         // list lien he
@@ -307,9 +340,23 @@ if (isset($_GET['act'])) {
                 break;
         // don hang
         case 'listdh':
-            $listdonhang=loadall_donhang();
+            // Lấy danh sách tất cả đơn hàng
+            $listdonhang = loadall_donhang();
+        
+            // Nhận dữ liệu từ phương thức GET (lọc trạng thái)
+            $filter_status = isset($_GET['filter_status']) ? trim($_GET['filter_status']) : "";
+        
+            // Kiểm tra và lọc danh sách đơn hàng theo trạng thái
+            if (!empty($filter_status)) {
+                $listdonhang = array_filter($listdonhang, function ($bill) use ($filter_status) {
+                    return isset($bill['trangthai']) && $bill['trangthai'] === $filter_status;
+                });
+            }
+        
+            // Gọi view hiển thị danh sách đơn hàng
             include "view/donhang/list.php";
-        break;
+            break;
+        
         case 'xoabill':
             if(isset($_GET['id'])&&($_GET['id']>0)){
                 delete_donhang($_GET['id']);
