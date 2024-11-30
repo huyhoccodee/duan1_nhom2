@@ -385,25 +385,40 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                         unset($_SESSION['error']);
                         $tt = 0;
                     
-                        // Kiểm tra mã giảm giá
+                        // Kiểm tra nếu đã áp dụng mã giảm giá
                         if (isset($_POST['apdungma']) && ($_POST['apdungma'])) {
                             $name_magg = $_POST['name_magg'];
-                            $checkmagg = null;
-                            $sql = "SELECT * FROM magiamgia WHERE name_magg ='$name_magg' AND is_delete=1";
-                            $checkmagg = pdo_query_one($sql);
                     
-                            if (is_array($checkmagg)) {
-                                // Giảm số lượng mã giảm giá
-                                $sql = "UPDATE magiamgia SET soluong = soluong - 1 WHERE name_magg ='$name_magg'";
-                                pdo_execute($sql);
-                    
-                                // Xóa mã giảm giá khi số lượng bằng 0
-                                $sql = "UPDATE magiamgia SET is_delete = 0 WHERE soluong = 0";
-                                pdo_execute($sql);
-                    
-                                $thongbao = "Nhập mã giảm giá thành công";
+                            // Kiểm tra nếu voucher đã được áp dụng
+                            if (isset($_SESSION['voucher_applied']) && $_SESSION['voucher_applied'] == $name_magg) {
+                                $thongbao = "Bạn đã chọn voucher này rồi.";
                             } else {
-                                $thongbao = "Mã giảm giá này không tồn tại";
+                                // Nếu đã áp dụng mã giảm giá cũ, hoàn trả lại số lượng mã giảm giá cho cơ sở dữ liệu
+                                if (isset($_SESSION['voucher_applied'])) {
+                                    $old_voucher = $_SESSION['voucher_applied'];
+                                    // Cập nhật lại số lượng mã giảm giá cũ
+                                    $sql = "UPDATE magiamgia SET soluong = soluong + 1 WHERE name_magg = '$old_voucher'";
+                                    pdo_execute($sql);
+                                }
+                    
+                                $checkmagg = null;
+                                // Lấy thông tin voucher từ DB
+                                $sql = "SELECT * FROM magiamgia WHERE name_magg = '$name_magg' AND is_delete = 1 AND end_date >= CURDATE()";
+                                $checkmagg = pdo_query_one($sql);
+                    
+                                if (is_array($checkmagg)) {
+                                    if ($checkmagg['soluong'] > 0) {
+                                        // Voucher hợp lệ, giảm số lượng và đánh dấu voucher đã áp dụng
+                                        $_SESSION['voucher_applied'] = $name_magg;
+                                        $sql = "UPDATE magiamgia SET soluong = soluong - 1 WHERE name_magg = '$name_magg'";
+                                        pdo_execute($sql);
+                                        $thongbao = "Nhập mã giảm giá thành công!";
+                                    } else {
+                                        $thongbao = "Mã giảm giá này đã hết hạn sử dụng.";
+                                    }
+                                } else {
+                                    $thongbao = "Mã giảm giá không tồn tại hoặc đã hết hạn.";
+                                }
                             }
                         }
                     
@@ -416,7 +431,7 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                             $bill_email = $_POST['bill_email'];
                             $id_pttt = $_POST['id_pttt'];
                             $ngaydathang = date("Y-m-d ");
-                            
+                    
                             // Kiểm tra tổng (total)
                             $total = isset($_POST['total']) ? $_POST['total'] : 0;
                     
@@ -433,7 +448,7 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                             if (empty($bill_name)) {
                                 $_SESSION['error']['name'] = 'Bạn chưa nhập tên';
                             } else {
-                                $regex_name = "/^[\p{L}\s]+$/u"; // Chỉ cho phép chữ cái và khoảng trắng (hỗ trợ tiếng Việt).
+                                $regex_name = "/^[\p{L}\s]+$/u";
                                 if (!preg_match($regex_name, $bill_name)) {
                                     $_SESSION['error']['name'] = 'Tên không hợp lệ, chỉ được chứa chữ cái và khoảng trắng';
                                 }
@@ -476,6 +491,7 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                         // Bao gồm file view để hiển thị giao diện thanh toán
                         include "view/checkout.php";
                         break;
+                    
 
                         case 'taikhoan':
                             include "view/my-account.php";

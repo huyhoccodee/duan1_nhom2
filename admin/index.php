@@ -132,22 +132,30 @@ if (isset($_GET['act'])) {
                 $id = $_GET['id'];
                 $voucher = loadone_voucher($id);  // Gọi hàm để lấy voucher theo ID
             }
-
+        
             if (isset($_POST['capnhat']) && $_POST['capnhat']) {
                 // Lấy thông tin mới từ form
                 $name_magg = $_POST['name_magg'];
                 $giamgia = $_POST['giamgia'];
                 $soluong = $_POST['soluong'];
                 $end_date = $_POST['end_date'];  // Ngày hết hạn
-
-                // Cập nhật voucher vào cơ sở dữ liệu
-                update_voucher($id, $name_magg, $giamgia, $soluong, $end_date);
-
-                $thongbao = "Cập nhật thành công";
+        
+                // Kiểm tra số lượng mã giảm giá
+                if ($soluong < 0) {
+                    $thongbao = "Số lượng mã giảm giá không thể nhỏ hơn 0!";
+                } else {
+                    // Cập nhật voucher vào cơ sở dữ liệu
+                    update_voucher($id, $name_magg, $giamgia, $soluong, $end_date);
+        
+                    // Thông báo cập nhật thành công
+                    $thongbao = "Cập nhật mã giảm giá thành công!";
+                }
             }
-
-            include "view/voucher/update.php";  // Bao gồm view để hiển thị form sửa
+        
+            // Hiển thị form sửa mã giảm giá
+            include "view/voucher/update.php";
             break;
+        
 
         /**LIÊN HỆ */
         

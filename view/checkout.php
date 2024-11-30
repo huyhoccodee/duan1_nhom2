@@ -1,4 +1,14 @@
-<!-- Breadcrumb Start -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+</head>
+<body>
+    <!-- Breadcrumb Start -->
 <div class="breadcrumb-wrap">
     <div class="container">
         <ul class="breadcrumb">
@@ -16,40 +26,44 @@
     <div class="container">
 
         <form action="index.php?act=checkout" method="post" class="khungmagg">
-            <input type="text" name="name_magg" placeholder="Mã giảm giá" class="magg">
-            <input type="submit" name="apdungma" value="Áp dụng mã" class="nhap">
-            <?= isset($thongbao) ? $thongbao : '' ?>
+            <label for="voucher">Chọn mã giảm giá</label>
+            <div class="form-group">
+                <select name="name_magg" id="voucher" class="form-control custom-select w-50">
+                    <option value="">--Chọn--</option>
+                    <?php
+                    // Lấy tất cả mã giảm giá từ cơ sở dữ liệu
+                    $sql = "SELECT * FROM magiamgia WHERE is_delete = 1"; // Lấy tất cả mã giảm giá
+                    $vouchers = pdo_query($sql);
+                    foreach ($vouchers as $voucher) {
+                        // Kiểm tra nếu mã giảm giá đã hết hạn hoặc còn mã sử dụng
+                        $expired = strtotime($voucher['end_date']) < time();
+                        $disabled = $voucher['soluong'] <= 0 || $expired ? 'disabled' : ''; // Nếu hết mã hoặc hết hạn, disable
+                        $status_class = $expired ? 'expired' : 'active'; // Class cho trạng thái
+                        $status_text = $expired ? 'Hết hạn' : ($voucher['soluong'] > 0 ? 'Còn ' . $voucher['soluong'] . ' mã' : 'Hết mã');
+                        $end_date = date('d-m-Y', strtotime($voucher['end_date'])); // Định dạng lại thời gian hết hạn
+                        echo "<option value='{$voucher['name_magg']}' {$disabled}>
+                                {$voucher['name_magg']} (HSD: {$end_date}) 
+                                <span class='{$status_class}'>{$status_text}</span>
+                            </option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <input type="submit" name="apdungma" value="Áp dụng mã" class="nhap btn btn-primary mt-3 w-20">
+            <span class="thongbao <?php echo isset($thongbao) && strpos($thongbao, 'thành công') !== false ? 'text-success' : 'text-danger'; ?>">
+                <?= isset($thongbao) ? $thongbao : '' ?>
+            </span>
+
+
         </form>
+
+     
         <form action="index.php?act=checkout" method="post">
 
             <div class="row">
                 <div class="col-md-7">
                     <div class="billing-address">
                         <h2>Nhập thông tin thanh toán</h2>
-
-                        <!-- <div class="row">
-                                <div class="col-md-6">
-                                    <label>Người đặt hàng</label>
-                                    <input class="form-control" name="bill_name" type="text" placeholder="Nhập tên" >
-                                </div>
-                               
-                                <div class="col-md-6">
-                                    <label>Địa chỉ</label>
-                                    <input class="form-control" name="bill_diachi" type="text" placeholder="Nhập địa chỉ" >
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Số điện thoại</label>
-                                    <input class="form-control" name="bill_sdt" type="text" placeholder="Nhập số điện thoại" id="sdt" >
-                                    <span class="thongbao"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Email</label>
-                                    <input class="form-control" name="bill_email" type="email" placeholder="Nhập email"  id="email">
-                                    <span class="thongbao"></span>
-                                </div>
-                                
-                                
-                            </div> -->
                         <div class="row">
                             <div class="col-md-6">
                                 <label>Người đặt hàng</label>
@@ -207,3 +221,5 @@
     </div>
 </div>
 <!-- Checkout End -->
+</body>
+</html>
