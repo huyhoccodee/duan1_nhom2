@@ -83,29 +83,34 @@
                                     $tong = 0;
                                     if (!empty($_SESSION['giohang'])) {
                                         foreach ($_SESSION['giohang'] as $item) {
-                                        $thanhtien = $item[3] * $item[4];
-                                        $tong += $thanhtien;
-                                        // $xoasp = '<a href="index.php?act=delcart&i=' . $i . '" class="btn btn-danger btn-sm">Xóa</a>';
-                                        $xoasp = '<a href="index.php?act=delcart&i=' . $i . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?\')">Xóa</a>';
-                                        $increaseQty = '<form method="POST" action="index.php?act=increase&i=' . $i . '" style="display:inline;">
-                                            <button type="submit" class="btn btn-success btn-sm">+</button>
+                                            // Chuyển giá trị sang số thực để tính toán chính xác
+                                            $price = (float)str_replace('.', '', $item[3]);
+                                            $quantity = (int)$item[4];
+                                            $thanhtien = $price * $quantity;
+                                            $tong += $thanhtien;
+
+                                            // Các thao tác với giỏ hàng
+                                            $xoasp = '<a href="index.php?act=delcart&i=' . $i . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?\')">Xóa</a>';
+                                            $increaseQty = '<form method="POST" action="index.php?act=increase&i=' . $i . '" style="display:inline;">
+                                                <button type="submit" class="btn btn-success btn-sm">+</button>
                                                 </form>';
-                                        $decreaseQty = '<form method="POST" action="index.php?act=decrease&i=' . $i . '" style="display:inline;">
-                                            <button type="submit" class="btn btn-warning btn-sm">-</button>
+                                            $decreaseQty = '<form method="POST" action="index.php?act=decrease&i=' . $i . '" style="display:inline;">
+                                                <button type="submit" class="btn btn-warning btn-sm">-</button>
                                                 </form>';
-                                        echo '
+
+                                            echo '
                                                 <tr class="text-center">
                                                     <td>' . ($i + 1) . '</td>
                                                     <td><img src="upload/' . $item[1] . '" alt="Hình ảnh" class="img-thumbnail" style="width: 80px; height: 80px;"></td>
                                                     <td>' . $item[2] . '</td>
-                                                    <td>' . number_format($item[3], 0, ',', '.') . '</td>
+                                                    <td>' . number_format($price, 0, ',', '.') . '</td>
                                                     <td>' . $item[7] . '</td>
                                                     <td>' . $item[8] . '</td>
-                                                    <td>' . $decreaseQty . ' ' . $item[4] . ' ' . $increaseQty . '</td>
+                                                    <td>' . $decreaseQty . ' ' . $quantity . ' ' . $increaseQty . '</td>
                                                     <td>' . number_format($thanhtien, 0, ',', '.') . '</td>
                                                     <td>' . $xoasp . '</td>
                                                 </tr>';
-                                        $i++;
+                                            $i++;
                                         }
                                     } else {
                                         echo '<tr><td colspan="9" class="text-center">Giỏ hàng của bạn hiện đang trống.</td></tr>';
@@ -118,17 +123,23 @@
             </div>
             <div class="row mt-4">
                 <!-- Cart Summary -->
-                <div class="col-md-6 offset-md-6 ">
+                <div class="col-md-6 offset-md-6">
                     <div class="cart-summary">
                         <h4 class="text-center mb-3">Chi tiết giỏ hàng</h4>
                         <div>
                             <?php
                             if (!empty($_SESSION['giohang'])) {
                                 foreach ($_SESSION['giohang'] as $item) {
-                                    echo '<p>' . $item[2] . ' <span class="fw-bold">x ' . $item[4] . '</span></p>';
+                                    $price = (float)str_replace('.', '', $item[3]);
+                                    $quantity = (int)$item[4];
+                                    echo '<p>' . $item[2] . ' <span class="fw-bold">x ' . $quantity . '</span></p>';
                                 }
-                                echo '<p>Phí vận chuyển: <span class="fw-bold">' . number_format(100000, 0, ',', '.') . ' VNĐ</span></p>';
-                                echo '<h5 class="text-end">Tổng thanh toán: <span class="fw-bold text-danger">' . number_format($tong + 100000, 0, ',', '.') . ' VNĐ</span></h5>';
+                                // Phí vận chuyển cố định
+                                $shipping_fee = 100000;
+                                $total = $tong + $shipping_fee;
+
+                                echo '<p>Phí vận chuyển: <span class="fw-bold">' . number_format($shipping_fee, 0, ',', '.') . ' VNĐ</span></p>';
+                                echo '<h5 class="text-end">Tổng thanh toán: <span class="fw-bold text-danger">' . number_format($total, 0, ',', '.') . ' VNĐ</span></h5>';
                             }
                             ?>
                         </div>

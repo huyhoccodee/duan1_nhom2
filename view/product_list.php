@@ -55,9 +55,7 @@
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                         </div>
-                                        <div class="price text-danger h6">
-                                            <?php echo number_format($sp['gia'], 0, ',', '.') . ' VNĐ'; ?>
-                                        </div>
+                                        <div class="price text-danger h6"><?php echo $sp['gia'] ?> VND</div>
                                     </div>
                                 </div>
                             </div>
@@ -83,9 +81,7 @@
                         <ul class="list-group">
                             <?php foreach ($sptop10 as $sp) { ?>
                                 <li class="list-group-item">
-                                    <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>" class="text-decoration-none">
-                                        <?php echo $sp['tensp']; ?>
-                                    </a>
+                                    <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>" class="text-decoration-none"><?php echo $sp['tensp'] ?></a>
                                 </li>
                             <?php } ?>
                         </ul>
