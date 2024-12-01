@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <!-- Breadcrumb Start -->
 <div class="breadcrumb-wrap bg-light py-3">
     <div class="container">
@@ -29,14 +28,14 @@
             <!-- Content -->
             <div class="col-md-9">
                 <?php if (isset($_SESSION['message'])) { ?>
-                    <div class="alert alert-success">
-                        <?= $_SESSION['message']; unset($_SESSION['message']); ?>
-                    </div>
+                <div class="alert alert-success">
+                    <?= $_SESSION['message']; unset($_SESSION['message']); ?>
+                </div>
                 <?php } ?>
                 <?php if (isset($_SESSION['error'])) { ?>
-                    <div class="alert alert-danger">
-                        <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-                    </div>
+                <div class="alert alert-danger">
+                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+                </div>
                 <?php } ?>
 
                 <div class="tab-content">
@@ -44,10 +43,16 @@
                     <div class="tab-pane fade show active" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
                         <h2 class="text-primary mb-4">Lịch sử Đơn Hàng</h2>
 
-                        <div class="table-responsive">
+                        <div class="table-responsive mt-3">
                             <?php 
                             if (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] > 0) {
                                 $billinfo = getbillinfo($_SESSION['user']['id']);
+
+                                // Sắp xếp theo id 
+                                usort($billinfo, function ($a, $b) {
+                                    return $b['id'] <=> $a['id'];
+                                });
+
                                 if (count($billinfo) > 0) {
                             ?>
                             <table class="table table-hover align-middle">
@@ -87,46 +92,40 @@
                                         </td>
                                         <td><?=number_format($bill['total'], 0, ',', '.')?> đ</td>
                                         <td>
-                                            <a href="index.php?act=chitietdh&id=<?=$bill['id']?>" class="btn btn-info btn-sm">
-                                                 Xem
+                                            <a href="index.php?act=chitietdh&id=<?=$bill['id']?>"
+                                                class="btn btn-info btn-sm">
+                                                Xem
                                             </a>
                                         </td>
-
                                         <td>
                                             <?php if ($bill['idtrangthai'] == 5) { ?>
-                                                <!-- Trạng thái là "Hoàn thành", vô hiệu hóa nút Hủy -->
-                                                <button class="btn btn-danger btn-sm" disabled>
-                                                    Hủy
-                                                </button>
+                                            <button class="btn btn-danger btn-sm" disabled>Hủy</button>
                                             <?php } elseif ($bill['idtrangthai'] == 6) { ?>
-                                                <!-- Trạng thái là "Đã hủy", hiển thị "Đã hủy" -->
-                                                Đã hủy
+                                            Đã hủy
                                             <?php } else { ?>
-                                                <!-- Trạng thái 1, 2, 3, 4, có thể hủy -->
-                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cancelModal<?=$bill['id']?>">
-                                                    Hủy
-                                                </button>
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#cancelModal<?=$bill['id']?>">Hủy</button>
                                             <?php } ?>
                                         </td>
-                                        
                                         <td>
-                                            <?php if ($bill['idtrangthai'] = 6) { ?>
-                                                <?=$bill['lydohuy'] ?? '---'?>
+                                            <?php if ($bill['idtrangthai'] == 6) { ?>
+                                            <?=$bill['lydohuy'] ?? '---'?>
                                             <?php } else { ?>
-                                            <td>---</td>
+                                            ---
                                             <?php } ?>
                                         </td>
-                                        
                                     </tr>
 
                                     <!-- Modal Hủy Đơn Hàng -->
-                                    <div class="modal fade" id="cancelModal<?=$bill['id']?>" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="cancelModal<?=$bill['id']?>" tabindex="-1"
+                                        aria-labelledby="cancelModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <form action="index.php?act=huydh" method="POST">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="cancelModalLabel">Hủy Đơn Hàng</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
@@ -134,12 +133,15 @@
                                                         <input type="hidden" name="id" value="<?=$bill['id']?>">
                                                         <div class="form-group">
                                                             <label for="cancelReason">Lý do hủy:</label>
-                                                            <textarea class="form-control" id="cancelReason" name="reason" rows="3" required></textarea>
+                                                            <textarea class="form-control" id="cancelReason"
+                                                                name="reason" rows="3" required></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                                        <button type="submit" class="btn btn-danger">Xác nhận hủy</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Đóng</button>
+                                                        <button type="submit" class="btn btn-danger">Xác nhận
+                                                            hủy</button>
                                                     </div>
                                                 </form>
                                             </div>
