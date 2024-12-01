@@ -115,57 +115,55 @@
 
                         <!-- -----------------------------------------------------magg-------------------------------------------------------- -->
                         <div class="checkout-content">
-
-
-
-                            <?php 
-                                $tong=0;
-                                if (isset($_POST['apdungma']) && ($_POST['apdungma'])) {
-                                    
-                                    $pvc=0;
-                                 foreach ($_SESSION['giohang'] as $item){
-                                    $thanhtien=$item[3]*$item[4];
-                                    $tong+=$thanhtien;
-                                    $tt=$tong+100000;
-                                    if(isset($checkmagg['giamgia'])){$pvc=$tt-$checkmagg['giamgia'];}
-                                    echo'
-                                    <p>'.$item[2].' <span>'.$item[3].' </span> | X'.$item[4].'</p>';
-                                 } ?>
-                            <p>Phí vận chuyển<span>100000</span></p>
-
-                            <p class="">Giảm giá<span><?php if(isset($checkmagg['giamgia'])){
-                                    if (isset($_POST['apdungma']) && ($_POST['apdungma'])) {
-                                    echo $checkmagg['giamgia'];}}else{echo "0đ";} ?></span></p>
-                            <h4>Thành tiền<span><?php if(isset($checkmagg['giamgia'])){
-                                                            echo $pvc;
-                                                        }else{
-                                                            echo $tt;
-                                                            
-                               }
-                                } else{
-                                    
-                                    foreach ($_SESSION['giohang'] as $item){
-                                        $thanhtien=$item[3]*$item[4];
-                                        $tong+=$thanhtien;
-                                        $tt=$tong+100000;
-                                       
-                                       echo'
-                                       <p>'.$item[2].' <span>'.$item[3].' </span> | X'.$item[4].'</p>';
-                                    } ?>
-                                    <p>Phí vận chuyển<span>100000</span></p>
-
-
-                                    <h4>Thành tiền<span><?php 
-                                   echo $tt;
-                                  
-                                }
-                        
-                                     ?> </span></h4>
-
-
-                        </div>
-                        <!-- ------------------------------------------------------------------------------------------------------------- -->
-                    </div>
+            <?php 
+                $tong = 0;
+                if (isset($_POST['apdungma']) && ($_POST['apdungma'])) {
+                    $pvc = 0;
+                    foreach ($_SESSION['giohang'] as $item) {
+                        $thanhtien = $item[3] * $item[4];
+                        $tong += $thanhtien;
+                        $tt = $tong + 100000;
+                        if (isset($checkmagg['giamgia'])) {
+                            $pvc = $tt - $checkmagg['giamgia'];
+                        }
+                        echo '
+                        <p>' . $item[2] . ' <span>' . number_format($item[3], 0, ',', '.') . ' VNĐ</span> | X' . $item[4] . '</p>';
+                    }
+            ?>
+            <p>Phí vận chuyển<span><?php echo number_format(100000, 0, ',', '.') . ' VNĐ'; ?></span></p>
+            <p class="">Giảm giá<span>
+                <?php 
+                if (isset($checkmagg['giamgia'])) {
+                    if (isset($_POST['apdungma']) && ($_POST['apdungma'])) {
+                        echo number_format($checkmagg['giamgia'], 0, ',', '.') . ' VNĐ';
+                    }
+                } else {
+                    echo "0 VNĐ";
+                } ?>
+            </span></p>
+            <h4>Thành tiền<span>
+                <?php 
+                if (isset($checkmagg['giamgia'])) {
+                    echo number_format($pvc, 0, ',', '.') . ' VNĐ';
+                } else {
+                    echo number_format($tt, 0, ',', '.') . ' VNĐ';
+                }
+                ?>
+            </span></h4>
+            <?php 
+                } else {
+                    foreach ($_SESSION['giohang'] as $item) {
+                        $thanhtien = $item[3] * $item[4];
+                        $tong += $thanhtien;
+                        $tt = $tong + 100000;
+                        echo '
+                        <p>' . $item[2] . ' <span>' . number_format($item[3], 0, ',', '.') . ' VNĐ</span> | X' . $item[4] . '</p>';
+                    }
+            ?>
+            <p>Phí vận chuyển<span><?php echo number_format(100000, 0, ',', '.') . ' VNĐ'; ?></span></p>
+            <h4>Thành tiền<span><?php echo number_format($tt, 0, ',', '.') . ' VNĐ'; ?></span></h4>
+            <?php } ?>
+        </div>
 
                     <div class="checkout-payment">
                         <h2>Phương thức thanh toán</h2>
