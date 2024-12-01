@@ -31,7 +31,7 @@
             <div class="row align-items-center">
                 <div class="col-md-3">
                     <div class="logo">
-                        <a href="">
+                        <a href="index.php">
                             <img src="img/logoHKT.png" alt="Logo">
                         </a>
                     </div>
