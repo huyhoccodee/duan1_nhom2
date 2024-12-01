@@ -55,7 +55,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <!-- <th>Id</th> -->
-                                        <th>ID tài khoản</th>
+                                        <th>Mã đơn hàng</th>
                                         <th>Tên người đặt</th>
                                         <th>Địa chỉ</th>
                                         <th>Số điện thoại</th>
@@ -74,7 +74,7 @@
                                         extract($bill);
                                     ?>
                                     <tr>
-                                        <td><?php echo $id_user; ?></td>
+                                        <td><?php echo $id; ?></td>
                                         <td><?php echo $bill_name; ?></td>
                                         <td><?php echo $bill_diachi; ?></td>
                                         <td><?php echo $bill_sdt; ?></td>
