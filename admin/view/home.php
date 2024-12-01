@@ -4,13 +4,22 @@ $getCountAccounts = count(loadall_dangky());
 $getCountProducts = count(loadall_spkbt());
 $getCountOrders = count(loadall_donhang());
 
-// Truy vấn cơ sở dữ liệu để lấy doanh thu của từng ngày trong tháng
+// Xử lý lọc tháng từ form
+$selectedMonth = isset($_GET['month']) ? $_GET['month'] : date('Y-m');
+$startDate = $selectedMonth . "-01";
+$endDate = date("Y-m-t", strtotime($startDate)); // Lấy ngày cuối cùng của tháng
+
+// Truy vấn cơ sở dữ liệu để lấy doanh thu theo tháng được chọn
 $sql = "SELECT DATE(bill.ngaydathang) as date, SUM(bill.total) as revenue
         FROM bill
-        WHERE bill.ngaydathang BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
+        WHERE bill.ngaydathang BETWEEN :startDate AND :endDate
         GROUP BY DATE(bill.ngaydathang)
         ORDER BY date ASC";
-$revenue_data = pdo_query($sql);
+$params = [
+    ':startDate' => $startDate,
+    ':endDate' => $endDate
+];
+$revenue_data = pdo_query($sql, $params);
 
 $dates = [];
 $revenues = [];
@@ -19,11 +28,12 @@ foreach ($revenue_data as $row) {
     $revenues[] = $row['revenue'];
 }
 
-// Chuyển đổi dữ liệu PHP thành dạng JSON để sử dụng trong JavaScript
+// Chuyển đổi dữ liệu PHP thành JSON để sử dụng trong JavaScript
 $dates_json = json_encode($dates);
 $revenues_json = json_encode($revenues);
-
 ?>
+
+
 <div class="main-content">
     <div class="page-content pt-4">
         <div class="container-fluid">
@@ -91,6 +101,14 @@ $revenues_json = json_encode($revenues);
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Biểu đồ thống kê doanh thu tháng</h4>
+                            <form method="GET" action="" class="mb-4">
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <label for="month" class="mr-2">Chọn tháng:</label>
+                                    <input type="month" id="month" name="month" class="form-control w-auto mr-2"
+                                        value="<?php echo isset($_GET['month']) ? $_GET['month'] : date('Y-m'); ?>">
+                                    <button type="submit" class="btn btn-primary btn-hover">Tìm kiếm</button>
+                                </div>
+                            </form>
                             <!-- Đảm bảo bạn đã thêm thư viện Chart.js vào trang của mình -->
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
