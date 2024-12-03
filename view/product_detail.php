@@ -49,7 +49,7 @@
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                 </div>
-                                <div class="price"><?php echo number_format($sp['gia'], 0, ',', '.') . ' VND'; ?></div>
+                                <div class="price"><?php echo $sp['gia']?></div>
                                 <form action="index.php?act=addcart" method="post">
                                     <div class="quantity">
                                         <h4>Số lượng:</h4>
@@ -76,7 +76,7 @@
                                         <input type="hidden" name="id_sp" value="<?php echo $sp['id_sp']?>">
                                         <input type="hidden" name="img" value="<?php echo $sp['img']?>">
                                         <input type="hidden" name="tensp" value="<?php echo $sp['tensp']?>">
-                                        <input type="hidden" name="gia" value="<?php echo number_format($sp['gia'], 0, ',', '.') . ' VND'; ?>">
+                                        <input type="hidden" name="gia" value="<?php echo $sp['gia']?>">
                                         <input class="clickmua btn btn-primary" type="submit" name="addtocart"
                                             value="Thêm vào giỏ hàng">
                                 </form>
@@ -160,7 +160,7 @@
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                 </div>
-                                <div class="price"><?php echo number_format($sp['gia'], 0, ',', '.') . ' VND'; ?></div>
+                                <div class="price"><?php echo $sp['gia']?></div>
                             </div>
                         </div>
                     </div>
@@ -185,11 +185,11 @@
                     <h2 class="title">Sản phẩm top 10</h2>
                     <ul class="list-group">
                         <?php foreach ($sptop10 as $sp) { ?>
-                            <li class="list-group-item"><a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>">
-                                <?php echo $sp['tensp'] . ' - ' . number_format($sp['gia'], 0, ',', '.') . ' VND'; ?>
+                            <li class="list-group-item">
+                                <a href="index.php?act=sanphamct&idsp=<?php echo $sp['id'] ?>">
+                                    <?php echo $sp['tensp'] . ' - ' . $sp['gia'] . ' VND'; ?>
                                 </a>
                             </li>
-
 
                         <?php } ?>
                     </ul>

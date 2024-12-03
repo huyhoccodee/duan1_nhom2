@@ -28,25 +28,32 @@
         <form action="index.php?act=checkout" method="post" class="khungmagg">
             <label for="voucher">Chọn mã giảm giá</label>
             <div class="form-group">
+            <?php
+        // Kiểm tra xem người dùng đã chọn mã giảm giá nào chưa
+        $selected_magg = isset($_POST['name_magg']) ? $_POST['name_magg'] : ''; 
+
+        // Lấy tất cả mã giảm giá từ cơ sở dữ liệu
+        $sql = "SELECT * FROM magiamgia WHERE is_delete = 1";
+        $vouchers = pdo_query($sql);
+    ?>
                 <select name="name_magg" id="voucher" class="form-control custom-select w-50">
-                    <option value="">--Chọn--</option>
-                    <?php
-                    // Lấy tất cả mã giảm giá từ cơ sở dữ liệu
-                    $sql = "SELECT * FROM magiamgia WHERE is_delete = 1"; // Lấy tất cả mã giảm giá
-                    $vouchers = pdo_query($sql);
-                    foreach ($vouchers as $voucher) {
-                        // Kiểm tra nếu mã giảm giá đã hết hạn hoặc còn mã sử dụng
-                        $expired = strtotime($voucher['end_date']) < time();
-                        $disabled = $voucher['soluong'] <= 0 || $expired ? 'disabled' : ''; // Nếu hết mã hoặc hết hạn, disable
-                        $status_class = $expired ? 'expired' : 'active'; // Class cho trạng thái
-                        $status_text = $expired ? 'Hết hạn' : ($voucher['soluong'] > 0 ? 'Còn ' . $voucher['soluong'] . ' mã' : 'Hết mã');
-                        $end_date = date('d-m-Y', strtotime($voucher['end_date'])); // Định dạng lại thời gian hết hạn
-                        echo "<option value='{$voucher['name_magg']}' {$disabled}>
-                                {$voucher['name_magg']} (HSD: {$end_date}) 
-                                <span class='{$status_class}'>{$status_text}</span>
-                            </option>";
-                    }
-                    ?>
+                <option value="">--Chọn--</option>
+                <?php
+                // Lấy tất cả mã giảm giá từ cơ sở dữ liệu
+                $sql = "SELECT * FROM magiamgia WHERE is_delete = 1";
+                $vouchers = pdo_query($sql);
+                foreach ($vouchers as $voucher) {
+                    // Kiểm tra nếu mã giảm giá đã hết hạn hoặc còn mã sử dụng
+                    $expired = strtotime($voucher['end_date']) < time();
+                    $disabled = $voucher['soluong'] <= 0 || $expired ? 'disabled' : ''; // Nếu hết mã hoặc hết hạn, disable
+                    $status_text = $expired ? 'Hết hạn' : ($voucher['soluong'] > 0 ? 'Còn ' . $voucher['soluong'] . ' mã' : 'Hết mã');
+                    $end_date = date('d-m-Y', strtotime($voucher['end_date'])); // Định dạng lại thời gian hết hạn
+                    $selected = ($voucher['name_magg'] === $selected_magg) ? 'selected' : ''; // Kiểm tra mã đã chọn
+                    echo "<option value='{$voucher['name_magg']}' {$disabled} {$selected}>
+                            {$voucher['name_magg']} (HSD: {$end_date}) - {$status_text}
+                        </option>";
+                }
+                ?>
                 </select>
             </div>
             <input type="submit" name="apdungma" value="Áp dụng mã" class="nhap btn btn-primary mt-3 w-20">
