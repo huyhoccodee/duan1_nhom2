@@ -213,9 +213,9 @@
                             <input type="hidden" name="thanhtien" value="<?php echo $thanhtien?>">
                         </div>
                         <!-- ------------------------------------------------------------------------------------------------------------- -->
-                        <div class="checkout-btn tieude">
+                        <div class="checkout-btn tieude text-center mt-3 mb-3">
                             <a href="index.php?act=taikhoan"><input type="submit" value="Đặt hàng " name="dathang"
-                                    class="nhap dathang" onclick="check()"></a>
+                                    class="nhap dathang text-bg-primary" onclick="check()"></a>
 
                         </div>
                     </div>

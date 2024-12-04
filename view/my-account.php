@@ -98,7 +98,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <?php if ($bill['idtrangthai'] == 5) { ?>
+                                            <?php if ($bill['idtrangthai'] == 5 || $bill['idtrangthai'] == 4) { ?>
                                             <button class="btn btn-danger btn-sm" disabled>Hủy</button>
                                             <?php } elseif ($bill['idtrangthai'] == 6) { ?>
                                             Đã hủy
