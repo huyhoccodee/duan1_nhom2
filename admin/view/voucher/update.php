@@ -41,6 +41,10 @@
                                     <input type="number" name="soluong" class="form-control" value="<?php echo $voucher['soluong']; ?>" min="1" required>
                                 </div>
                                 <div class="adm">
+                                    Đơn tối thiểu<br>
+                                    <input type="number" name="min_order_value" class="form-control" value="<?php echo $voucher['min_order_value']; ?>" required>
+                                </div>
+                                <div class="adm">
                                     <input type="submit" name="capnhat" value="Cập nhật" class="nhap">
                                     <a href="index.php?act=listvc"><input type="button" value="Danh sách" class="adleft nhap"></a>
                                 </div>
