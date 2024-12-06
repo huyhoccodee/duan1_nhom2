@@ -174,7 +174,11 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
             include "view/dangnhap.php";
             break;
         case 'dangxuat':
+            // Lưu giỏ hàng vào một biến tạm
+            $giohang = $_SESSION['giohang'] ?? [];
             session_unset();
+            // Khôi phục giỏ hàng vào session
+            $_SESSION['giohang'] = $giohang;
             header('Location: index.php');
             include "view/trangchu.php";
             break;

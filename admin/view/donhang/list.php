@@ -36,7 +36,7 @@
                                         <option value="Chờ xác nhận" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Chờ xác nhận') ? 'selected' : '' ?>>Chờ xác nhận</option>
                                         <option value="Đang xử lý" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Đang xử lý') ? 'selected' : '' ?>>Đang xử lý</option>
                                         <option value="Đang giao hàng" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Đang giao hàng') ? 'selected' : '' ?>>Đang giao hàng</option>
-                                        <option value="Đã giao hàng" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Đã giao hàng') ? 'selected' : '' ?>>Đã giao hàng</option>
+                                        <option value="Đã nhận hàng" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Đã nhận hàng') ? 'selected' : '' ?>>Đã nhận hàng</option>
                                         <option value="Hoàn thành" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Hoàn thành') ? 'selected' : '' ?>>Hoàn thành</option>
                                         <option value="Hủy đơn hàng" <?= (isset($_GET['filter_status']) && $_GET['filter_status'] == 'Hủy đơn hàng') ? 'selected' : '' ?>>Hủy đơn hàng</option>
                                     </select>

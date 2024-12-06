@@ -140,13 +140,17 @@
 
                                 echo '<p>Phí vận chuyển: <span class="fw-bold">' . number_format($shipping_fee, 0, ',', '.') . ' VNĐ</span></p>';
                                 echo '<h5 class="text-end">Tổng thanh toán: <span class="fw-bold text-danger">' . number_format($total, 0, ',', '.') . ' VNĐ</span></h5>';
+                            }else {
+                                echo '<p class="text-center text-danger">Giỏ hàng của bạn hiện đang trống. Vui lòng <a href="index.php?act=sanpham" class="text-primary">quay lại mua sắm</a>.</p>';
                             }
                             ?>
                         </div>
                         <div class="cart-btn mt-3 text-center">
+                        <?php if (!empty($_SESSION['giohang'])) { ?>
                             <a href="index.php?act=checkout">
                                 <button class="btn btn-primary btn-lg">Thủ tục thanh toán</button>
                             </a>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
