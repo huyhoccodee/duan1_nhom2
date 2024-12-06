@@ -24,42 +24,75 @@
 <!-- Checkout Start -->
 <div class="checkout">
     <div class="container">
-
         <form action="index.php?act=checkout" method="post" class="khungmagg">
-            <label for="voucher">Chọn mã giảm giá</label>
             <div class="form-group">
             <?php
-        // Kiểm tra xem người dùng đã chọn mã giảm giá nào chưa
-        $selected_magg = isset($_POST['name_magg']) ? $_POST['name_magg'] : ''; 
+            // Kiểm tra xem người dùng đã chọn mã giảm giá nào chưa
+            $thongbao = '';
+            $selected_magg = isset($_POST['name_magg']) ? $_POST['name_magg'] : ''; 
+            $sql = "SELECT * FROM magiamgia WHERE is_delete = 1";
+            $vouchers = pdo_query($sql);
+            ?>
 
-        // Lấy tất cả mã giảm giá từ cơ sở dữ liệu
-        $sql = "SELECT * FROM magiamgia WHERE is_delete = 1";
-        $vouchers = pdo_query($sql);
-    ?>
-                <select name="name_magg" id="voucher" class="form-control custom-select w-50">
-                <option value="">--Chọn--</option>
+            <select name="name_magg" id="voucher" class="form-control custom-select w-50">
+                <option value="">--Chọn mã giảm giá--</option>
                 <?php
-                // Lấy tất cả mã giảm giá từ cơ sở dữ liệu
-                $sql = "SELECT * FROM magiamgia WHERE is_delete = 1";
-                $vouchers = pdo_query($sql);
                 foreach ($vouchers as $voucher) {
-                    // Kiểm tra nếu mã giảm giá đã hết hạn hoặc còn mã sử dụng
-                    $expired = strtotime($voucher['end_date']) < time();
-                    $disabled = $voucher['soluong'] <= 0 || $expired ? 'disabled' : ''; // Nếu hết mã hoặc hết hạn, disable
+                    // Kiểm tra xem voucher đã hết hạn chưa
+                    $expired = strtotime($voucher['end_date']) < time();                   
+                    // Kiểm tra số lượng voucher còn lại
+                    $disabled = $voucher['soluong'] <= 0 || $expired ? 'disabled' : '';                 
+                    // Lấy giá trị min của voucher
+                    $min_order_value = $voucher['min_order_value'] > 0 ? $voucher['min_order_value'] : 0;
+                    // Tính tổng giá trị đơn hàng (bao gồm cả phí vận chuyển)
+                    $tong = 0;
+                    foreach ($_SESSION['giohang'] as $item) {
+                        $thanhtien = $item[3] * $item[4];
+                        $tong += $thanhtien;
+                    }
+                    $tt = $tong + 100000;
+                    // Kiểm tra tổng đơn hàng có nằm trong phạm vi min_order_value không
+                    if ($tt < $min_order_value) {
+                        $disabled = 'disabled';
+                    }                  
+                    // Hiển thị lựa chọn mã giảm giá
                     $status_text = $expired ? 'Hết hạn' : ($voucher['soluong'] > 0 ? 'Còn ' . $voucher['soluong'] . ' mã' : 'Hết mã');
-                    $end_date = date('d-m-Y', strtotime($voucher['end_date'])); // Định dạng lại thời gian hết hạn
-                    $selected = ($voucher['name_magg'] === $selected_magg) ? 'selected' : ''; // Kiểm tra mã đã chọn
+                    $status_text2 = "Đơn tối thiểu: {$min_order_value}";
+                    $end_date = date('d-m-Y', strtotime($voucher['end_date']));
+                    $selected = ($voucher['name_magg'] === $selected_magg) ? 'selected' : '';
+                
                     echo "<option value='{$voucher['name_magg']}' {$disabled} {$selected}>
-                            {$voucher['name_magg']} (HSD: {$end_date}) - {$status_text}
-                        </option>";
+                        {$voucher['name_magg']} (HSD: {$end_date}) - {$status_text} - {$status_text2}
+                    </option>";
                 }
                 ?>
-                </select>
-            </div>
-            <input type="submit" name="apdungma" value="Áp dụng mã" class="nhap btn btn-primary mt-3 w-20">
-            <span class="thongbao <?php echo isset($thongbao) && strpos($thongbao, 'thành công') !== false ? 'text-success' : 'text-danger'; ?>">
-                <?= isset($thongbao) ? $thongbao : '' ?>
-            </span>
+            </select>
+           </div>
+           <input type="submit" name="apdungma" value="Áp dụng mã" class="nhap btn btn-primary w-20">
+           <?php
+                // Kiểm tra mã giảm giá khi người dùng áp dụng
+                if (isset($_POST['apdungma']) && $_POST['name_magg']) {
+                    // Lấy thông tin voucher đã chọn
+                    $voucher_name = $_POST['name_magg'];
+                    $voucher_check = pdo_query_one("SELECT * FROM magiamgia WHERE name_magg = ?", [$voucher_name]);
+                    
+                    // Kiểm tra nếu voucher tồn tại và có số lượng còn lại
+                    if ($voucher_check && $voucher_check['soluong'] > 0 && strtotime($voucher_check['end_date']) > time()) {
+                        // Voucher hợp lệ
+                        $_SESSION['voucher'] = $voucher_check;
+                        $checkmagg = $voucher_check; // Gán giá trị vào $checkmagg
+                        $thongbao = "Mã giảm giá '{$voucher_name}' đã được áp dụng thành công!";
+                    } else {
+                        // Voucher không hợp lệ
+                        $thongbao = "Mã giảm giá không hợp lệ hoặc đã hết hạn!";
+                    }
+                }
+            ?>
+                
+                
+                <span class="thongbao <?php echo isset($thongbao) && strpos($thongbao, 'thành công') !== false ? 'text-success' : 'text-danger'; ?>">
+                    <?= isset($thongbao) ? $thongbao : '' ?>
+                </span>
 
 
         </form>
@@ -149,14 +182,17 @@
                 } ?>
             </span></p>
             <h4>Thành tiền<span>
-                <?php 
-                if (isset($checkmagg['giamgia'])) {
-                    echo number_format($pvc, 0, ',', '.') . ' VNĐ';
-                } else {
-                    echo number_format($tt, 0, ',', '.') . ' VNĐ';
-                }
-                ?>
-            </span></h4>
+            <?php 
+            if (isset($checkmagg['giamgia'])) {
+                $pvc = $tt - $checkmagg['giamgia']; // Áp dụng giảm giá
+                echo number_format($pvc, 0, ',', '.') . ' VNĐ';
+            } else {
+                echo number_format($tt, 0, ',', '.') . ' VNĐ';
+            }
+            ?>
+
+            </span>
+            </h4>
             <?php 
                 } else {
                     foreach ($_SESSION['giohang'] as $item) {

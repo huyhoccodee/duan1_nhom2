@@ -407,14 +407,23 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                                 $checkmagg = pdo_query_one($sql);
                     
                                 if (is_array($checkmagg)) {
-                                    if ($checkmagg['soluong'] > 0) {
+                                    $tong = 0;
+                                    foreach ($_SESSION['giohang'] as $item) {
+                                        $thanhtien = $item[3] * $item[4];
+                                        $tong += $thanhtien;
+                                    }
+                    
+                                    $tt = $tong + 100000;  // Phí vận chuyển
+                    
+                                    // Kiểm tra tổng đơn hàng có đủ điều kiện áp dụng voucher không
+                                    if ($tt >= $checkmagg['min_order_value']) {
                                         // Voucher hợp lệ, giảm số lượng và đánh dấu voucher đã áp dụng
                                         $_SESSION['voucher_applied'] = $name_magg;
                                         $sql = "UPDATE magiamgia SET soluong = soluong - 1 WHERE name_magg = '$name_magg'";
                                         pdo_execute($sql);
                                         $thongbao = "Nhập mã giảm giá thành công!";
                                     } else {
-                                        $thongbao = "Mã giảm giá này đã hết hạn sử dụng.";
+                                        $thongbao = "Tổng đơn hàng không đủ điều kiện để áp dụng mã giảm giá này.";
                                     }
                                 } else {
                                     $thongbao = "Mã giảm giá không tồn tại hoặc đã hết hạn.";
@@ -430,7 +439,7 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                             $bill_sdt = $_POST['bill_sdt'];
                             $bill_email = $_POST['bill_email'];
                             $id_pttt = $_POST['id_pttt'];
-                            $ngaydathang = date("Y-m-d ");
+                            $ngaydathang = date("Y-m-d");
                     
                             // Kiểm tra tổng (total)
                             $total = isset($_POST['total']) ? $_POST['total'] : 0;

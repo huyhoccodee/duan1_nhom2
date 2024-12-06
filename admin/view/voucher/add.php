@@ -41,6 +41,10 @@
                                     <input type="number" name="soluong" class="form-control" min="1" required>
                                 </div>
                                 <div class="adm">
+                                    Đơn tối thiểu<br>
+                                    <input type="number" name="min_order_value" class="form-control" required>
+                                </div>
+                                <div class="adm">
                                     <input type="submit" name="themmoi" value="Thêm mới" class="nhap">
                                     <a href="index.php?act=listvc"><input type="button" value="Danh sách" class="adleft nhap"></a>
                                 </div>

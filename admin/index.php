@@ -101,9 +101,10 @@ if (isset($_GET['act'])) {
                 $name_magg = $_POST['name_magg'];
                 $giamgia = $_POST['giamgia'];
                 $end_date = $_POST['end_date'];
+                $min_order_value = $_POST['min_order_value'];
                 $soluong = $_POST['soluong'];
                 
-                insert_voucher($name_magg, $giamgia, $soluong, $end_date);
+                insert_voucher($name_magg, $giamgia, $soluong, $end_date, $min_order_value);
                 $thongbao = "Thêm mới thành công";
             }
             include "view/voucher/add.php";
@@ -138,14 +139,15 @@ if (isset($_GET['act'])) {
                 $name_magg = $_POST['name_magg'];
                 $giamgia = $_POST['giamgia'];
                 $soluong = $_POST['soluong'];
-                $end_date = $_POST['end_date'];  // Ngày hết hạn
+                $end_date = $_POST['end_date'];
+                $min_order_value = $_POST['min_order_value'];
         
                 // Kiểm tra số lượng mã giảm giá
                 if ($soluong < 0) {
                     $thongbao = "Số lượng mã giảm giá không thể nhỏ hơn 0!";
                 } else {
                     // Cập nhật voucher vào cơ sở dữ liệu
-                    update_voucher($id, $name_magg, $giamgia, $soluong, $end_date);
+                    update_voucher($id, $name_magg, $giamgia, $soluong, $end_date, $min_order_value);
         
                     // Thông báo cập nhật thành công
                     $thongbao = "Cập nhật mã giảm giá thành công!";

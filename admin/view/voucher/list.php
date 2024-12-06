@@ -31,6 +31,7 @@
                                     <th>Số tiền giảm giá</th>
                                     <th>Số lượng</th>
                                     <th>Ngày hết hạn</th>
+                                    <th>Đơn tối thiểu</th>
                                     <th class ="col-2">Xóa</th>
                                 </tr>
                             </thead>
@@ -47,6 +48,7 @@
                                         <td>' . $giamgia . '</td>
                                         <td>' . $soluong . '</td>
                                         <td>' . $end_date . '</td>
+                                        <td>' . $min_order_value . '</td>
                                         <td>
                                             <a href="' . $xoavc . '"><input type="button" value="Xóa" class="btn btn-danger"></a>
                                             <a href="'. $updatevc . '"><input type="button" value="Sửa" class="btn btn-warning"></a>
