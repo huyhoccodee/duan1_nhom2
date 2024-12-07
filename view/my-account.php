@@ -19,7 +19,7 @@
                     <a class="nav-link active" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab">
                         Lịch sử đặt hàng
                     </a>
-                    <a class="nav-link text-danger" href="index.php?act=thoat">
+                    <a class="nav-link text-danger" href="index.php?act=dangxuat">
                         <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
                     </a>
                 </div>
