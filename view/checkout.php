@@ -221,15 +221,8 @@
                             </div>
                             <div class="payment-method">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" id="payment-2" name="id_pttt"
-                                        value="2" require>
-                                    <label class="custom-control-label" for="payment-2">Thanh toán oline qua
-                                        VNPAY</label>
-                                </div>
-                                <div class="payment-content" id="payment-2-show">
-                                    <p>
-
-                                    </p>
+                                    <input type="radio" class="custom-control-input" id="payment-2" name="id_pttt" value="2">
+                                    <label class="custom-control-label" for="payment-2">Thanh toán online qua VNPay</label>
                                 </div>
                             </div>
                             <div class="payment-method">
