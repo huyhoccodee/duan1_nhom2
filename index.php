@@ -435,7 +435,6 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                             }
                         }
                     
-                        // Kiểm tra thông tin thanh toán khi người dùng nhấn 'Đặt hàng'
                         if (isset($_POST['dathang']) && ($_POST['dathang'])) {
                             $id_user = $_SESSION['user']['id'];
                             $bill_name = $_POST['bill_name'];
@@ -444,10 +443,10 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                             $bill_email = $_POST['bill_email'];
                             $id_pttt = $_POST['id_pttt'];
                             $ngaydathang = date("Y-m-d");
-                    
+                        
                             // Kiểm tra tổng (total)
                             $total = isset($_POST['total']) ? $_POST['total'] : 0;
-                    
+                        
                             // Kiểm tra các trường thông tin
                             if (empty($bill_email)) {
                                 $_SESSION['error']['email'] = 'Bạn chưa nhập email';
@@ -457,7 +456,7 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                                     $_SESSION['error']['email'] = 'Email không hợp lệ';
                                 }
                             }
-                    
+                        
                             if (empty($bill_name)) {
                                 $_SESSION['error']['name'] = 'Bạn chưa nhập tên';
                             } else {
@@ -466,7 +465,7 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                                     $_SESSION['error']['name'] = 'Tên không hợp lệ, chỉ được chứa chữ cái và khoảng trắng';
                                 }
                             }
-                    
+                        
                             if (empty($bill_diachi)) {
                                 $_SESSION['error']['diachi'] = 'Bạn chưa nhập địa chỉ';
                             } else {
@@ -474,7 +473,7 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                                     $_SESSION['error']['diachi'] = 'Địa chỉ quá ngắn, tối thiểu 10 ký tự';
                                 }
                             }
-                    
+                        
                             if (empty($bill_sdt)) {
                                 $_SESSION['error']['sdt'] = 'Bạn chưa nhập số điện thoại';
                             } else {
@@ -483,22 +482,44 @@ if (isset($_GET['act'])&&($_GET['act']!="")) {
                                     $_SESSION['error']['sdt'] = 'Số điện thoại không hợp lệ';
                                 }
                             }
-                    
+                        
                             // Nếu không có lỗi, thực hiện đặt hàng
                             if (empty($_SESSION['error'])) {
-                                // Thêm đơn hàng vào database
-                                $id_bill = insert_bill($id_user, $bill_name, $bill_diachi, $bill_sdt, $bill_email, $id_pttt, $ngaydathang, $total);
-                                $_SESSION['id_bill'] = $id_bill;
-                    
-                                // Xử lý các sản phẩm trong giỏ hàng
-                                if (isset($_SESSION['giohang']) && count($_SESSION['giohang']) > 0) {
-                                    foreach ($_SESSION['giohang'] as $item) {
-                                        addtocart($id_user, $item[0], $item[1], $item[2], $item[3], $item[4], $id_bill, $item[5], $item[6], $item[9]);
+                                // Kiểm tra phương thức thanh toán
+                                if ($id_pttt == 2) {
+                                    // Thanh toán qua VNPay
+                                    $_SESSION['temp_order'] = [
+                                        'id_user' => $id_user,
+                                        'bill_name' => $bill_name,
+                                        'bill_diachi' => $bill_diachi,
+                                        'bill_sdt' => $bill_sdt,
+                                        'bill_email' => $bill_email,
+                                        'id_pttt' => $id_pttt,
+                                        'ngaydathang' => $ngaydathang,
+                                        'total' => $total
+                                    ];
+                        
+                                    // Chuyển hướng tới VNPay
+                                    header("Location: vnpay_php/vnpay_create_payment.php?total=$total");
+                                    exit();
+                                } else {
+                                    // Thêm đơn hàng vào database
+                                    $id_bill = insert_bill($id_user, $bill_name, $bill_diachi, $bill_sdt, $bill_email, $id_pttt, $ngaydathang, $total);
+                                    $_SESSION['id_bill'] = $id_bill;
+                        
+                                    // Xử lý các sản phẩm trong giỏ hàng
+                                    if (isset($_SESSION['giohang']) && count($_SESSION['giohang']) > 0) {
+                                        foreach ($_SESSION['giohang'] as $item) {
+                                            addtocart($id_user, $item[0], $item[1], $item[2], $item[3], $item[4], $id_bill, $item[5], $item[6], $item[9]);
+                                        }
+                                        unset($_SESSION['giohang']);
+                                        header('location: index.php?act=taikhoan');
                                     }
-                                    unset($_SESSION['giohang']);
-                                    header('location: index.php?act=taikhoan');
                                 }
                             }
+                        
+                        
+                            
                         }
                     
                         // Bao gồm file view để hiển thị giao diện thanh toán
